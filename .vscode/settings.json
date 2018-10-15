@@ -1,0 +1,12 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "javascript.validate.enable": true,
+  "editor.formatOnSave": true,
+  "prettier.printWidth": 100,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "all",
+  "search.exclude": {
+    "**/android": true,
+    "**/ios": true
+  }
+}
