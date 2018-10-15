@@ -8,5 +8,6 @@
   "search.exclude": {
     "**/android": true,
     "**/ios": true
-  }
+  },
+  "git.ignoreLimitWarning": true
 }
