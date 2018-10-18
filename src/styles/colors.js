@@ -18,7 +18,7 @@ const colors = {
 export default {
   ...colors,
   bodyBg: colors.white,
-  bodyColor: colors.shark,
+  textColor: colors.shark,
 
   primaryColor: colors.persimmon,
   secondaryColor: colors.teal,

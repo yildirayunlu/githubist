@@ -1,12 +1,9 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
+import Style from '../../styles';
 
-const AppText = ({ children, bold, style, ...otherProps }) => {
+const AppText = ({ children, style, ...otherProps }) => {
   const defaultStyle = [styles.default];
-
-  if (bold) {
-    defaultStyle.push(styles.bold);
-  }
 
   return (
     <Text style={[defaultStyle, style]} {...otherProps}>
@@ -17,10 +14,7 @@ const AppText = ({ children, bold, style, ...otherProps }) => {
 
 const styles = StyleSheet.create({
   default: {
-    color: '#000',
-  },
-  bold: {
-    fontWeight: '500',
+    color: Style.colors.textColor,
   },
 });
 

@@ -1,12 +1,38 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import cx from 'classnames';
 
+import Style from '../../styles';
 import { AppText } from '..';
 
-const Item = ({ children, itemPressed }) => (
-  <TouchableOpacity onPress={itemPressed}>
-    <AppText>{children}</AppText>
-  </TouchableOpacity>
-);
+const Item = ({ children, isActive, itemPressed }) => {
+  const itemStyle = [styles.item];
+
+  if (isActive) {
+    itemStyle.push([styles.isActive]);
+  }
+
+  return (
+    <TouchableOpacity onPress={itemPressed}>
+      <AppText style={itemStyle}>{children}</AppText>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  item: {
+    fontSize: Style.variables.fontSizes.large,
+    marginBottom: Style.variables.spacing.xSmall,
+    color: Style.colors.jumbo,
+    fontWeight: '400',
+  },
+  isActive: {
+    color: Style.colors.blackColor,
+  },
+});
+
+Item.defaultProps = {
+  isActive: undefined,
+};
 
 export default Item;

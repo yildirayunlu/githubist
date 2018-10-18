@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import { ScrollView } from 'react-native';
 
-import { LinkBar, LinkBarItem, AppText } from '../../components';
+import { LinkBar, LinkBarItem, Container, Heading } from '../../components';
 
 class Developers extends PureComponent {
   constructor(props) {
@@ -15,15 +15,19 @@ class Developers extends PureComponent {
 
   render() {
     return (
-      <View>
-        <Text>Github.ist üzerinde toplam 19,528 geliştirici bulunuyor.</Text>
-        <LinkBar>
-          <LinkBarItem itemPressed={() => {}}>Sıralama</LinkBarItem>
-          <LinkBarItem itemPressed={() => {}}>Star&apos;lanma Sayısına Göre</LinkBarItem>
-          <LinkBarItem itemPressed={() => {}}>Takipçi Sayısına Göre</LinkBarItem>
-          <LinkBarItem itemPressed={() => {}}>İlk Keşfedenler</LinkBarItem>
-        </LinkBar>
-      </View>
+      <ScrollView>
+        <Container>
+          <Heading h4>Github.ist üzerinde toplam 19,528 geliştirici bulunuyor.</Heading>
+          <LinkBar>
+            <LinkBarItem isActive itemPressed={() => {}}>
+              Sıralama
+            </LinkBarItem>
+            <LinkBarItem itemPressed={() => {}}>Star&apos;lanma Sayısına Göre</LinkBarItem>
+            <LinkBarItem itemPressed={() => {}}>Takipçi Sayısına Göre</LinkBarItem>
+            <LinkBarItem itemPressed={() => {}}>İlk Keşfedenler</LinkBarItem>
+          </LinkBar>
+        </Container>
+      </ScrollView>
     );
   }
 }
