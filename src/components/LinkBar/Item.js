@@ -1,6 +1,5 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import cx from 'classnames';
 
 import Style from '../../styles';
 import { AppText } from '..';
