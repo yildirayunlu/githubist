@@ -19,8 +19,8 @@ export const Routes = {
   Developers: {
     screen: 'app.Developers',
     generator: () => Developers,
-    title: 'Developers',
-    label: 'Developers',
+    title: 'Geliştiriciler',
+    label: 'Geliştiriciler',
     icon: iconDevelopers,
   },
   Cities: {

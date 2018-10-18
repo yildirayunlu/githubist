@@ -12,6 +12,8 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'arrow-body-style': 'warn',
     'no-use-before-define': 'off',
+    'react/require-default-props': 'off',
+    'react/prop-types': 'off',
     'prettier/prettier': [
       'error',
       {
