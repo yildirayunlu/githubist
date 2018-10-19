@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 
-import { LinkBar, LinkBarItem, Container, Heading } from '../../components';
+import Style from '../../styles';
+import { LinkBar, DeveloperCard, LinkBarItem, Container, H4 } from '../../components';
 
 class Developers extends PureComponent {
   constructor(props) {
@@ -17,19 +18,35 @@ class Developers extends PureComponent {
     return (
       <ScrollView>
         <Container>
-          <Heading h4>Github.ist üzerinde toplam 19,528 geliştirici bulunuyor.</Heading>
-          <LinkBar>
-            <LinkBarItem isActive itemPressed={() => {}}>
-              Sıralama
-            </LinkBarItem>
-            <LinkBarItem itemPressed={() => {}}>Star&apos;lanma Sayısına Göre</LinkBarItem>
-            <LinkBarItem itemPressed={() => {}}>Takipçi Sayısına Göre</LinkBarItem>
-            <LinkBarItem itemPressed={() => {}}>İlk Keşfedenler</LinkBarItem>
-          </LinkBar>
+          <H4 style={styles.heading}>Github.ist üzerinde toplam 19,528 geliştirici bulunuyor.</H4>
+          <View style={styles.linkBar}>
+            <LinkBar>
+              <LinkBarItem isActive itemPressed={() => {}}>
+                Sıralama
+              </LinkBarItem>
+              <LinkBarItem itemPressed={() => {}}>Star&apos;lanma Sayısına Göre</LinkBarItem>
+              <LinkBarItem itemPressed={() => {}}>Takipçi Sayısına Göre</LinkBarItem>
+              <LinkBarItem itemPressed={() => {}}>İlk Keşfedenler</LinkBarItem>
+            </LinkBar>
+          </View>
+
+          <View style={styles.developerList}>
+            <DeveloperCard>Foo Bar </DeveloperCard>
+          </View>
         </Container>
       </ScrollView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  heading: {
+    marginBottom: Style.variables.spacing.xLarge,
+  },
+  linkBar: {
+    marginBottom: Style.variables.spacing.large,
+  },
+  developerList: {},
+});
 
 export default Developers;
