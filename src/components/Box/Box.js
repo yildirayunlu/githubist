@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     backgroundColor: Style.colors.white,
     borderRadius: 2,
     shadowColor: '#d5d5d6',
+    marginBottom: Style.variables.spacing.normal,
     shadowOffset: {
       width: 3,
       height: 3,

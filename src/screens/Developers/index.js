@@ -31,7 +31,17 @@ class Developers extends PureComponent {
           </View>
 
           <View style={styles.developerList}>
-            <DeveloperCard>Foo Bar </DeveloperCard>
+            <DeveloperCard
+              rank={1}
+              name="Yıldıray ÜNLÜ"
+              username="yildirayunlu"
+              profilePicture="https://avatars1.githubusercontent.com/u/3484713?v=4"
+              company="Macellan"
+              totalStarred={1420}
+              followers={20}
+              location="İstanbul"
+              repositoriesCount={10}
+            />
           </View>
         </Container>
       </ScrollView>
