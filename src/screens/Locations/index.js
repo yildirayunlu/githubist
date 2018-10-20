@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const Developers = () => (
+const Locations = () => (
   <View>
-    <Text>Developers</Text>
+    <Text>Locations</Text>
   </View>
 );
 
-export default Developers;
+export default Locations;

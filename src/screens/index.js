@@ -1,12 +1,12 @@
 import { Navigation } from 'react-native-navigation';
 
 import Developers from './Developers';
-import Cities from './Cities';
+import Locations from './Locations';
 import Languages from './Languages';
 import Repositories from './Repositories';
 
 import iconDevelopers from '../../assets/images/icons/developers.png';
-import iconCities from '../../assets/images/icons/cities.png';
+import iconLocations from '../../assets/images/icons/locations.png';
 import iconLanguages from '../../assets/images/icons/languages.png';
 import iconRepositories from '../../assets/images/icons/repositories.png';
 
@@ -23,12 +23,12 @@ export const Routes = {
     label: 'Geliştiriciler',
     icon: iconDevelopers,
   },
-  Cities: {
-    screen: 'app.Cities',
-    generator: () => Cities,
-    title: 'Cities',
-    label: 'Cities',
-    icon: iconCities,
+  Locations: {
+    screen: 'app.Locations',
+    generator: () => Locations,
+    title: 'Locations',
+    label: 'Locations',
+    icon: iconLocations,
   },
   Languages: {
     screen: 'app.Languages',
@@ -54,7 +54,7 @@ export function registerScreens() {
 
 export function openHomeScreen() {
   Navigation.startTabBasedApp({
-    tabs: [Routes.Developers, Routes.Cities, Routes.Languages, Routes.Repositories],
+    tabs: [Routes.Developers, Routes.Locations, Routes.Languages, Routes.Repositories],
     tabsStyle: { ...tabsStyle },
   });
 }
