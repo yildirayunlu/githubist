@@ -26,8 +26,8 @@ export const Routes = {
   Locations: {
     screen: 'app.Locations',
     generator: () => Locations,
-    title: 'Locations',
-    label: 'Locations',
+    title: 'Şehirler',
+    label: 'Şehirler',
     icon: iconLocations,
   },
   Languages: {
