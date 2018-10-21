@@ -3,18 +3,44 @@ import { ScrollView, View, StyleSheet } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import ByScore from './tabs/ByScore';
 import Style from '../../styles';
-import { LinkBar, DeveloperCard, LinkBarItem, Loading, Container, Heading } from '../../components';
+import {
+  LinkBar,
+  LinkBarItem,
+  AppText,
+  Loading,
+  Container,
+  Heading,
+  ErrorState,
+} from '../../components';
 
 class Developers extends PureComponent {
   constructor(props) {
     super(props);
+
+    this.state = {
+      tab: 'score',
+    };
 
     const { navigator } = this.props;
     navigator.setStyle({
       largeTitle: true,
     });
   }
+
+  renderContent = () => {
+    const { tab } = this.state;
+
+    switch (tab) {
+      case 'score':
+        return <ByScore />;
+      case 'star':
+        return <AppText>Star Component</AppText>;
+      default:
+        return <AppText>default</AppText>;
+    }
+  };
 
   render() {
     const query = gql`
@@ -25,6 +51,8 @@ class Developers extends PureComponent {
       }
     `;
 
+    const { tab } = this.state;
+
     return (
       <Query query={query}>
         {({ loading, error, data }) => {
@@ -32,9 +60,8 @@ class Developers extends PureComponent {
             return <Loading />;
           }
 
-          // todo
           if (error || !data || !data.turkey) {
-            console.error(error);
+            return <ErrorState />;
           }
 
           return (
@@ -47,28 +74,42 @@ class Developers extends PureComponent {
                 </Heading.H4>
                 <View style={styles.linkBar}>
                   <LinkBar>
-                    <LinkBarItem isActive itemPressed={() => {}}>
+                    <LinkBarItem
+                      itemPressed={() => {
+                        this.setState({ tab: 'score' });
+                      }}
+                      isActive={tab === 'score'}
+                    >
                       Sıralama
                     </LinkBarItem>
-                    <LinkBarItem itemPressed={() => {}}>Star&apos;lanma Sayısına Göre</LinkBarItem>
-                    <LinkBarItem itemPressed={() => {}}>Takipçi Sayısına Göre</LinkBarItem>
-                    <LinkBarItem itemPressed={() => {}}>İlk Keşfedenler</LinkBarItem>
+                    <LinkBarItem
+                      itemPressed={() => {
+                        this.setState({ tab: 'star' });
+                      }}
+                      isActive={tab === 'star'}
+                    >
+                      Star&apos;lanma Sayısına Göre
+                    </LinkBarItem>
+                    <LinkBarItem
+                      itemPressed={() => {
+                        this.setState({ tab: 'follower' });
+                      }}
+                      isActive={tab === 'follower'}
+                    >
+                      Takipçi Sayısına Göre
+                    </LinkBarItem>
+                    <LinkBarItem
+                      itemPressed={() => {
+                        this.setState({ tab: 'date' });
+                      }}
+                      isActive={tab === 'date'}
+                    >
+                      İlk Keşfedenler
+                    </LinkBarItem>
                   </LinkBar>
                 </View>
 
-                <View style={styles.developerList}>
-                  <DeveloperCard
-                    rank={1}
-                    name="Yıldıray ÜNLÜ"
-                    username="yildirayunlu"
-                    profilePicture="https://avatars1.githubusercontent.com/u/3484713?v=4"
-                    company="Macellan"
-                    totalStarred={1420}
-                    followers={20}
-                    location="İstanbul"
-                    repositoriesCount={10}
-                  />
-                </View>
+                <View style={styles.developerList}>{this.renderContent()}</View>
               </Container>
             </ScrollView>
           );
