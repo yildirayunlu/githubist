@@ -10,6 +10,7 @@ module.exports = {
   },
   rules: {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+    'no-underscore-dangle': ['error', { allow: ['__APOLLO_STATE__'] }],
     'arrow-body-style': 'warn',
     'no-use-before-define': 'off',
     'react/require-default-props': 'off',

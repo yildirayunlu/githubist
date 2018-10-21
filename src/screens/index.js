@@ -1,4 +1,8 @@
+import React from 'react';
 import { Navigation } from 'react-native-navigation';
+import { ApolloClient, InMemoryCache } from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
+import { createHttpLink } from 'apollo-link-http';
 
 import Developers from './Developers';
 import Locations from './Locations';
@@ -15,10 +19,33 @@ const tabsStyle = {
   tabBarSelectedButtonColor: '#333',
 };
 
+const cache = new InMemoryCache();
+
+const localClient = new ApolloClient({
+  link: createHttpLink({
+    uri: 'https://data.github.ist/graphql',
+  }),
+  cache,
+});
+
+const withProvider = (Component, client = localClient) => {
+  return class extends React.Component {
+    static options = Component.options;
+
+    render() {
+      return (
+        <ApolloProvider client={client}>
+          <Component {...this.props} />
+        </ApolloProvider>
+      );
+    }
+  };
+};
+
 export const Routes = {
   Developers: {
     screen: 'app.Developers',
-    generator: () => Developers,
+    generator: () => withProvider(Developers),
     title: 'Geliştiriciler',
     label: 'Geliştiriciler',
     icon: iconDevelopers,

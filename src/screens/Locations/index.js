@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 
 import Style from '../../styles';
-import { LinkBar, LocationCard, LinkBarItem, Container, H4 } from '../../components';
+import { LinkBar, LocationCard, LinkBarItem, Container, Heading } from '../../components';
 
 class Locations extends PureComponent {
   constructor(props) {
@@ -18,7 +18,9 @@ class Locations extends PureComponent {
     return (
       <ScrollView>
         <Container>
-          <H4 style={styles.heading}>Github.ist üzerinde toplam 81 şehir bulunuyor.</H4>
+          <Heading.H4 style={styles.heading}>
+            Github.ist üzerinde toplam 81 şehir bulunuyor.
+          </Heading.H4>
           <View style={styles.linkBar}>
             <LinkBar>
               <LinkBarItem isActive itemPressed={() => {}}>
