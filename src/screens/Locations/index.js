@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 
 import Style from '../../styles';
-import { LinkBar, LocationCard, LinkBarItem, Container, Heading } from '../../components';
+import { LocationCard, Container, Heading } from '../../components';
 
 class Locations extends PureComponent {
   constructor(props) {
@@ -21,15 +21,7 @@ class Locations extends PureComponent {
           <Heading.H4 style={styles.heading}>
             Github.ist üzerinde toplam 81 şehir bulunuyor.
           </Heading.H4>
-          <View style={styles.linkBar}>
-            <LinkBar>
-              <LinkBarItem isActive itemPressed={() => {}}>
-                Sıralama
-              </LinkBarItem>
-              <LinkBarItem itemPressed={() => {}}>Geliştirci Sayısına Göre</LinkBarItem>
-              <LinkBarItem itemPressed={() => {}}>Repo Sayısına Göre</LinkBarItem>
-            </LinkBar>
-          </View>
+          <View style={styles.linkBar} />
 
           <View style={styles.developerList}>
             <LocationCard

@@ -1,61 +1,131 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Loading, DeveloperCard, ErrorState } from '../../components';
+import Style from '../../styles';
 
-const DeveloperList = props => {
-  const { orderBy } = props;
+import { Loading, Container, DeveloperCard, ErrorState } from '../../components';
 
-  const query = gql`
-    query($limit: Int!, $offset: Int!, $orderBy: DeveloperOrder!) {
-      developers(limit: $limit, offset: $offset, orderBy: $orderBy) {
-        id
-        name
-        username
-        avatarUrl
-        totalStarred
-        followers
-        company
-        stats {
-          repositoriesCount
-        }
-        location {
+class DeveloperList extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loadMoreLoading: false,
+    };
+  }
+
+  loadMoreContent = (loading, data, error, fetchMore) => {
+    if (loading) {
+      return;
+    }
+
+    if (error || !data || !data.developers) {
+      return;
+    }
+
+    this.setState({ loadMoreLoading: true }, () => {
+      fetchMore({
+        variables: {
+          offset: data.developers.length,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) {
+            return prev;
+          }
+
+          if (fetchMoreResult.developers.length === 0) {
+            this.setState({ loadMoreLoading: false }, () => prev);
+          }
+
+          this.setState({ loadMoreLoading: false });
+
+          return {
+            ...prev,
+            developers: [...prev.developers, ...fetchMoreResult.developers],
+          };
+        },
+      });
+    });
+  };
+
+  render() {
+    const query = gql`
+      query($limit: Int!, $offset: Int!, $orderBy: DeveloperOrder!) {
+        developers(limit: $limit, offset: $offset, orderBy: $orderBy) {
+          id
           name
-          slug
+          username
+          avatarUrl
+          totalStarred
+          followers
+          company
+          stats {
+            repositoriesCount
+          }
+          location {
+            name
+            slug
+          }
         }
       }
-    }
-  `;
+    `;
 
-  return (
-    <Query query={query} variables={{ limit: 10, offset: 0, orderBy }}>
-      {({ loading, error, data }) => {
-        if (loading) {
-          return <Loading />;
-        }
+    const { orderBy, headerComponent } = this.props;
+    const { loadMoreLoading } = this.state;
 
-        if (error || !data) {
-          return <ErrorState />;
-        }
+    return (
+      <Query query={query} variables={{ limit: 10, offset: 0, orderBy }}>
+        {({ loading, error, data, fetchMore }) => {
+          if (loading) {
+            return <Loading />;
+          }
 
-        return data.developers.map((developer, index) => (
-          <DeveloperCard
-            key={developer.id}
-            rank={index + 1}
-            name={developer.name}
-            username={developer.username}
-            profilePicture={developer.avatarUrl}
-            company={developer.company}
-            totalStarred={developer.totalStarred}
-            followers={developer.followers}
-            location={developer.location.name}
-            repositoriesCount={developer.stats.repositoriesCount}
-          />
-        ));
-      }}
-    </Query>
-  );
-};
+          if (error || !data) {
+            return <ErrorState />;
+          }
+
+          return (
+            <Container>
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                style={styles.container}
+                data={data.developers}
+                renderItem={({ item, index }) => (
+                  <DeveloperCard
+                    key={item.id}
+                    rank={index + 1}
+                    name={item.name}
+                    username={item.username}
+                    profilePicture={item.avatarUrl}
+                    company={item.company}
+                    totalStarred={item.totalStarred}
+                    followers={item.followers}
+                    location={item.location.name}
+                    repositoriesCount={item.stats.repositoriesCount}
+                  />
+                )}
+                numColumns={1}
+                keyExtractor={(developer, index) => `developer_${index}`}
+                onEndReached={() => {
+                  this.loadMoreContent(loading, data, error, fetchMore);
+                }}
+                ListFooterComponent={loadMoreLoading && <Loading />}
+                ListHeaderComponent={headerComponent}
+              />
+            </Container>
+          );
+        }}
+      </Query>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: Style.variables.spacing.normal,
+  },
+});
 
 export default DeveloperList;

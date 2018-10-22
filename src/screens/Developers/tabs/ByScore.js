@@ -1,6 +1,8 @@
 import React from 'react';
 import DeveloperList from '../DeveloperList';
 
-const ByScore = () => <DeveloperList orderBy={{ field: 'SCORE', direction: 'DESC' }} />;
+const ByScore = ({ header }) => (
+  <DeveloperList headerComponent={header} orderBy={{ field: 'SCORE', direction: 'DESC' }} />
+);
 
 export default ByScore;

@@ -5,6 +5,7 @@
   "prettier.printWidth": 100,
   "prettier.singleQuote": true,
   "prettier.trailingComma": "all",
+  "editor.tabSize": 2,
   "search.exclude": {
     "**/android": true,
     "**/ios": true

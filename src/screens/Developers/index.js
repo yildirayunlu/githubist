@@ -1,132 +1,62 @@
 import React, { PureComponent } from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { TabView } from 'react-native-tab-view';
 
 import ByScore from './tabs/ByScore';
-import Style from '../../styles';
-import {
-  LinkBar,
-  LinkBarItem,
-  AppText,
-  Loading,
-  Container,
-  Heading,
-  ErrorState,
-} from '../../components';
+import ByTotalStarred from './tabs/ByTotalStarred';
+import ByDate from './tabs/ByDate';
+import ByFollowers from './tabs/ByFollowers';
+
+import { TabBar } from '../../components';
 
 class Developers extends PureComponent {
   constructor(props) {
     super(props);
 
+    /* eslint-disable react/no-unused-state */
     this.state = {
-      tab: 'score',
+      index: 0,
+      routes: [
+        { key: 'score', title: 'Sıralama' },
+        { key: 'totalStarred', title: "Star'lanma Sayısına Göre" },
+        { key: 'followers', title: 'Takipçi Sayısına Göre' },
+        { key: 'date', title: 'İlk Keşfedenler' },
+      ],
     };
-
-    const { navigator } = this.props;
-    navigator.setStyle({
-      largeTitle: true,
-    });
+    /* eslint-enable react/no-unused-state */
   }
 
-  renderContent = () => {
-    const { tab } = this.state;
+  renderTabBar = props => <TabBar {...props} />;
 
-    switch (tab) {
+  renderScene = sceneProps => {
+    switch (sceneProps.route.key) {
       case 'score':
         return <ByScore />;
-      case 'star':
-        return <AppText>Star Component</AppText>;
+
+      case 'totalStarred':
+        return <ByTotalStarred />;
+
+      case 'followers':
+        return <ByFollowers />;
+
+      case 'date':
+        return <ByDate />;
+
       default:
-        return <AppText>default</AppText>;
+        return null;
     }
   };
 
   render() {
-    const query = gql`
-      query {
-        turkey {
-          totalDevelopers
-        }
-      }
-    `;
-
-    const { tab } = this.state;
-
     return (
-      <Query query={query}>
-        {({ loading, error, data }) => {
-          if (loading) {
-            return <Loading />;
-          }
-
-          if (error || !data || !data.turkey) {
-            return <ErrorState />;
-          }
-
-          return (
-            <ScrollView>
-              <Container>
-                <Heading.H4 style={styles.heading}>
-                  {`Github.ist üzerinde toplam ${
-                    data.turkey.totalDevelopers
-                  } geliştirici bulunuyor.`}
-                </Heading.H4>
-                <View style={styles.linkBar}>
-                  <LinkBar>
-                    <LinkBarItem
-                      itemPressed={() => {
-                        this.setState({ tab: 'score' });
-                      }}
-                      isActive={tab === 'score'}
-                    >
-                      Sıralama
-                    </LinkBarItem>
-                    <LinkBarItem
-                      itemPressed={() => {
-                        this.setState({ tab: 'star' });
-                      }}
-                      isActive={tab === 'star'}
-                    >
-                      Star&apos;lanma Sayısına Göre
-                    </LinkBarItem>
-                    <LinkBarItem
-                      itemPressed={() => {
-                        this.setState({ tab: 'follower' });
-                      }}
-                      isActive={tab === 'follower'}
-                    >
-                      Takipçi Sayısına Göre
-                    </LinkBarItem>
-                    <LinkBarItem
-                      itemPressed={() => {
-                        this.setState({ tab: 'date' });
-                      }}
-                      isActive={tab === 'date'}
-                    >
-                      İlk Keşfedenler
-                    </LinkBarItem>
-                  </LinkBar>
-                </View>
-
-                <View style={styles.developerList}>{this.renderContent()}</View>
-              </Container>
-            </ScrollView>
-          );
-        }}
-      </Query>
+      <TabView
+        navigationState={this.state}
+        renderTabBar={this.renderTabBar}
+        renderScene={this.renderScene}
+        // eslint-disable-next-line react/no-unused-state
+        onIndexChange={index => this.setState({ index })}
+      />
     );
   }
 }
-
-const styles = StyleSheet.create({
-  heading: {
-    marginBottom: Style.variables.spacing.xLarge,
-  },
-  linkBar: {
-    marginBottom: Style.variables.spacing.large,
-  },
-  developerList: {},
-});
 
 export default Developers;
