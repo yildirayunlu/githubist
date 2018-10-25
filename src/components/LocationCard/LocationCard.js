@@ -4,7 +4,7 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Style from '../../styles';
 import { Box, AppText } from '..';
 
-const LocationCard = ({ rank, name, slug, totalRepositories, totalDevelopers, language }) => (
+const LocationCard = ({ rank, name, totalRepositories, totalDevelopers, language }) => (
   <TouchableOpacity activeOpacity={0.8}>
     <Box>
       <View style={styles.name}>

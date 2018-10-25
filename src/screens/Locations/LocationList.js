@@ -5,9 +5,9 @@ import gql from 'graphql-tag';
 
 import Style from '../../styles';
 
-import { Loading, Container, DeveloperCard, ErrorState } from '../../components';
+import { Loading, Container, LocationCard, ErrorState } from '../../components';
 
-class DeveloperList extends PureComponent {
+class LocationList extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -21,21 +21,21 @@ class DeveloperList extends PureComponent {
       return;
     }
 
-    if (error || !data || !data.developers) {
+    if (error || !data || !data.locations) {
       return;
     }
 
     this.setState({ loadMoreLoading: true }, () => {
       fetchMore({
         variables: {
-          offset: data.developers.length,
+          offset: data.locations.length,
         },
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) {
             return prev;
           }
 
-          if (fetchMoreResult.developers.length === 0) {
+          if (fetchMoreResult.locations.length === 0) {
             this.setState({ loadMoreLoading: false }, () => prev);
           }
 
@@ -43,7 +43,7 @@ class DeveloperList extends PureComponent {
 
           return {
             ...prev,
-            developers: [...prev.developers, ...fetchMoreResult.developers],
+            locations: [...prev.locations, ...fetchMoreResult.locations],
           };
         },
       });
@@ -52,21 +52,18 @@ class DeveloperList extends PureComponent {
 
   render() {
     const query = gql`
-      query($limit: Int!, $offset: Int!, $orderBy: DeveloperOrder!) {
-        developers(limit: $limit, offset: $offset, orderBy: $orderBy) {
+      query($limit: Int!, $offset: Int!, $orderBy: LocationOrder!) {
+        locations(limit: $limit, offset: $offset, orderBy: $orderBy) {
           id
           name
-          username
-          avatarUrl
-          totalStarred
-          followers
-          company
-          stats {
-            repositoriesCount
-          }
-          location {
-            name
-            slug
+          slug
+          totalDevelopers
+          totalRepositories
+          languageUsage(limit: 1) {
+            language {
+              name
+              slug
+            }
           }
         }
       }
@@ -91,19 +88,20 @@ class DeveloperList extends PureComponent {
               <FlatList
                 showsVerticalScrollIndicator={false}
                 style={styles.container}
-                data={data.developers}
+                data={data.locations}
                 renderItem={({ item, index }) => (
-                  <DeveloperCard
-                    key={item.id}
+                  <LocationCard
+                    key={index}
                     rank={index + 1}
                     name={item.name}
-                    username={item.username}
-                    profilePicture={item.avatarUrl}
-                    company={item.company}
-                    totalStarred={item.totalStarred}
-                    followers={item.followers}
-                    location={item.location.name}
-                    repositoriesCount={item.stats.repositoriesCount}
+                    // slug={item.slug}
+                    totalRepositories={item.totalRepositories}
+                    totalDevelopers={item.totalDevelopers}
+                    language={
+                      item.languageUsage.length > 0
+                        ? item.languageUsage[0].language.name
+                        : undefined
+                    }
                   />
                 )}
                 numColumns={1}
@@ -128,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DeveloperList;
+export default LocationList;

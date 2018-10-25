@@ -52,7 +52,7 @@ export const Routes = {
   },
   Locations: {
     screen: 'app.Locations',
-    generator: () => Locations,
+    generator: () => withProvider(Locations),
     title: 'Şehirler',
     label: 'Şehirler',
     icon: iconLocations,

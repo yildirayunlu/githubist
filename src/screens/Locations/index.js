@@ -1,52 +1,57 @@
 import React, { PureComponent } from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { TabView } from 'react-native-tab-view';
 
-import Style from '../../styles';
-import { LocationCard, Container, Heading } from '../../components';
+import ByScore from './tabs/ByScore';
+import ByTotalDevelopers from './tabs/ByTotalDevelopers';
+import ByTotalRepositories from './tabs/ByTotalRepositories';
+
+import { TabBar } from '../../components';
 
 class Locations extends PureComponent {
   constructor(props) {
     super(props);
 
-    const { navigator } = this.props;
-    navigator.setStyle({
-      largeTitle: true,
-    });
+    /* eslint-disable react/no-unused-state */
+    this.state = {
+      index: 0,
+      routes: [
+        { key: 'score', title: 'Sıralama' },
+        { key: 'totalDevelopers', title: 'Geliştirici Sayısına Göre' },
+        { key: 'totalRepositories', title: 'Repo Sayısına Göre' },
+      ],
+    };
+    /* eslint-enable react/no-unused-state */
   }
+
+  renderTabBar = props => <TabBar {...props} />;
+
+  renderScene = sceneProps => {
+    switch (sceneProps.route.key) {
+      case 'score':
+        return <ByScore />;
+
+      case 'totalDevelopers':
+        return <ByTotalDevelopers />;
+
+      case 'totalRepositories':
+        return <ByTotalRepositories />;
+
+      default:
+        return null;
+    }
+  };
 
   render() {
     return (
-      <ScrollView>
-        <Container>
-          <Heading.H4 style={styles.heading}>
-            Github.ist üzerinde toplam 81 şehir bulunuyor.
-          </Heading.H4>
-          <View style={styles.linkBar} />
-
-          <View style={styles.developerList}>
-            <LocationCard
-              rank={1}
-              name="İstanbul"
-              slug="istanbul"
-              totalRepositories="12569"
-              totalDevelopers="853"
-              language="Javascript"
-            />
-          </View>
-        </Container>
-      </ScrollView>
+      <TabView
+        navigationState={this.state}
+        renderTabBar={this.renderTabBar}
+        renderScene={this.renderScene}
+        // eslint-disable-next-line react/no-unused-state
+        onIndexChange={index => this.setState({ index })}
+      />
     );
   }
 }
-
-const styles = StyleSheet.create({
-  heading: {
-    marginBottom: Style.variables.spacing.xLarge,
-  },
-  linkBar: {
-    marginBottom: Style.variables.spacing.large,
-  },
-  developerList: {},
-});
 
 export default Locations;
