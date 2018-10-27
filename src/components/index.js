@@ -6,5 +6,6 @@ export { default as Box } from './Box';
 export { default as Avatar } from './Avatar';
 export { default as DeveloperCard } from './DeveloperCard';
 export { default as LocationCard } from './LocationCard';
+export { default as LanguageCard } from './LanguageCard';
 export { default as Loading } from './Loading';
 export { default as ErrorState } from './ErrorState';

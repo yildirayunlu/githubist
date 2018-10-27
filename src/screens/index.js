@@ -59,14 +59,14 @@ export const Routes = {
   },
   Languages: {
     screen: 'app.Languages',
-    generator: () => Languages,
+    generator: () => withProvider(Languages),
     title: 'Languages',
     label: 'Languages',
     icon: iconLanguages,
   },
   Repositories: {
     screen: 'app.Repositories',
-    generator: () => Repositories,
+    generator: () => withProvider(Repositories),
     title: 'Repositories',
     label: 'Repositories',
     icon: iconRepositories,
