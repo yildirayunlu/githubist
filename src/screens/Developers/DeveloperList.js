@@ -107,7 +107,8 @@ class DeveloperList extends PureComponent {
                   />
                 )}
                 numColumns={1}
-                keyExtractor={item => item.id}
+                // keyExtractor={item => `developers-${orderBy.field}-${item.id}`}
+                keyExtractor={(item, index) => `developers-${orderBy.field}-${index}`}
                 onEndReached={() => {
                   this.loadMoreContent(loading, data, error, fetchMore);
                 }}

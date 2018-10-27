@@ -105,7 +105,7 @@ class LocationList extends PureComponent {
                   />
                 )}
                 numColumns={1}
-                keyExtractor={item => item.id}
+                keyExtractor={(item, index) => `location-${orderBy.field}-${index}`}
                 onEndReached={() => {
                   this.loadMoreContent(loading, data, error, fetchMore);
                 }}
