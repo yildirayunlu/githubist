@@ -3,7 +3,11 @@ import { View, StyleSheet } from 'react-native';
 
 import Style from '../../styles';
 
-const Box = ({ children }) => <View style={styles.box}>{children}</View>;
+const Box = ({ children, style }) => {
+  const defaultStyle = [styles.box];
+
+  return <View style={[defaultStyle, style]}>{children}</View>;
+};
 
 const styles = StyleSheet.create({
   box: {

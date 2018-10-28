@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import Style from '../../styles';
-
+import { Routes } from '..';
 import { Loading, Container, DeveloperCard, ErrorState } from '../../components';
 
 class DeveloperList extends PureComponent {
@@ -72,7 +72,7 @@ class DeveloperList extends PureComponent {
       }
     `;
 
-    const { orderBy, headerComponent } = this.props;
+    const { orderBy, navigator } = this.props;
     const { loadMoreLoading } = this.state;
 
     return (
@@ -94,6 +94,20 @@ class DeveloperList extends PureComponent {
                 data={data.developers}
                 renderItem={({ item, index }) => (
                   <DeveloperCard
+                    onPressUser={() => {
+                      navigator.push({
+                        ...Routes.Developer,
+                        title: item.name,
+                        passProps: { username: item.username },
+                      });
+                    }}
+                    onPressLocation={() => {
+                      navigator.push({
+                        ...Routes.Location,
+                        title: item.location.name,
+                        passProps: { location: item.location.slug },
+                      });
+                    }}
                     key={item.id}
                     rank={index + 1}
                     name={item.name}
@@ -107,13 +121,11 @@ class DeveloperList extends PureComponent {
                   />
                 )}
                 numColumns={1}
-                // keyExtractor={item => `developers-${orderBy.field}-${item.id}`}
                 keyExtractor={(item, index) => `developers-${orderBy.field}-${index}`}
                 onEndReached={() => {
                   this.loadMoreContent(loading, data, error, fetchMore);
                 }}
                 ListFooterComponent={loadMoreLoading && <Loading />}
-                ListHeaderComponent={headerComponent}
               />
             </Container>
           );

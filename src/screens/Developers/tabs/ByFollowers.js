@@ -1,6 +1,8 @@
 import React from 'react';
 import DeveloperList from '../DeveloperList';
 
-const ByFollowers = () => <DeveloperList orderBy={{ field: 'FOLLOWERS', direction: 'DESC' }} />;
+const ByFollowers = ({ navigator }) => (
+  <DeveloperList navigator={navigator} orderBy={{ field: 'FOLLOWERS', direction: 'DESC' }} />
+);
 
 export default ByFollowers;

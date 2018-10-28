@@ -8,6 +8,8 @@ import Developers from './Developers';
 import Locations from './Locations';
 import Languages from './Languages';
 import Repositories from './Repositories';
+import Developer from './Developer';
+import Location from './Location';
 
 import iconDevelopers from '../../assets/images/icons/developers.png';
 import iconLocations from '../../assets/images/icons/locations.png';
@@ -70,6 +72,16 @@ export const Routes = {
     title: 'Repositories',
     label: 'Repositories',
     icon: iconRepositories,
+  },
+  Developer: {
+    screen: 'app.Developer',
+    generator: () => withProvider(Developer),
+    title: 'Developer',
+  },
+  Location: {
+    screen: 'app.Location',
+    generator: () => withProvider(Location),
+    title: 'Location',
   },
 };
 

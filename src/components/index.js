@@ -10,3 +10,4 @@ export { default as LanguageCard } from './LanguageCard';
 export { default as RepositoryCard } from './RepositoryCard';
 export { default as Loading } from './Loading';
 export { default as ErrorState } from './ErrorState';
+export { default as Highlight } from './Highlight';

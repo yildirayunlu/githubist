@@ -28,18 +28,20 @@ class Developers extends PureComponent {
   renderTabBar = props => <TabBar {...props} />;
 
   renderScene = sceneProps => {
+    const { navigator } = this.props;
+
     switch (sceneProps.route.key) {
       case 'score':
-        return <ByScore />;
+        return <ByScore navigator={navigator} />;
 
       case 'totalStarred':
-        return <ByTotalStarred />;
+        return <ByTotalStarred navigator={navigator} />;
 
       case 'followers':
-        return <ByFollowers />;
+        return <ByFollowers navigator={navigator} />;
 
       case 'date':
-        return <ByDate />;
+        return <ByDate navigator={navigator} />;
 
       default:
         return null;
