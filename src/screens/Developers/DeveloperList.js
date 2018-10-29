@@ -15,8 +15,10 @@ class DeveloperList extends PureComponent {
     };
   }
 
-  loadMoreContent = (loading, data, error, fetchMore) => {
-    if (loading) {
+  loadMoreContent = (data, error, fetchMore) => {
+    const { loadMoreLoading } = this.state;
+
+    if (loadMoreLoading) {
       return;
     }
 
@@ -75,7 +77,7 @@ class DeveloperList extends PureComponent {
     const { loadMoreLoading } = this.state;
 
     return (
-      <Query query={query} variables={{ limit: 10, offset: 0, orderBy }}>
+      <Query query={query} variables={{ limit: 20, offset: 0, orderBy }}>
         {({ loading, error, data, fetchMore }) => {
           if (loading) {
             return <Loading />;
@@ -121,7 +123,7 @@ class DeveloperList extends PureComponent {
                 numColumns={1}
                 keyExtractor={(item, index) => `developers-${orderBy.field}-${index}`}
                 onEndReached={() => {
-                  this.loadMoreContent(loading, data, error, fetchMore);
+                  this.loadMoreContent(data, error, fetchMore);
                 }}
                 ListFooterComponent={loadMoreLoading && <Loading />}
               />

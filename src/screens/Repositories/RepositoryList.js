@@ -14,8 +14,10 @@ class RepositoryList extends PureComponent {
     };
   }
 
-  loadMoreContent = (loading, data, error, fetchMore) => {
-    if (loading) {
+  loadMoreContent = (data, error, fetchMore) => {
+    const { loadMoreLoading } = this.state;
+
+    if (loadMoreLoading) {
       return;
     }
 
@@ -70,7 +72,7 @@ class RepositoryList extends PureComponent {
     const { loadMoreLoading } = this.state;
 
     return (
-      <Query query={query} variables={{ limit: 10, offset: 0, orderBy }}>
+      <Query query={query} variables={{ limit: 20, offset: 0, orderBy }}>
         {({ loading, error, data, fetchMore }) => {
           if (loading) {
             return <Loading />;
@@ -100,7 +102,7 @@ class RepositoryList extends PureComponent {
                 numColumns={1}
                 keyExtractor={(item, index) => `location-${orderBy.field}-${index}`}
                 onEndReached={() => {
-                  this.loadMoreContent(loading, data, error, fetchMore);
+                  this.loadMoreContent(data, error, fetchMore);
                 }}
                 ListFooterComponent={loadMoreLoading && <Loading />}
                 ListHeaderComponent={headerComponent}
