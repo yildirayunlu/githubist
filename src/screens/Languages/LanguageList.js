@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-
-import Style from '../../styles';
 
 import { Loading, Container, LanguageCard, ErrorState } from '../../components';
 
@@ -81,7 +79,6 @@ class LocationList extends PureComponent {
             <Container>
               <FlatList
                 showsVerticalScrollIndicator={false}
-                style={styles.container}
                 data={data.languages}
                 renderItem={({ item, index }) => (
                   <LanguageCard
@@ -107,11 +104,5 @@ class LocationList extends PureComponent {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: Style.variables.spacing.normal,
-  },
-});
 
 export default LocationList;

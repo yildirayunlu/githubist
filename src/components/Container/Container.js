@@ -7,7 +7,7 @@ const Container = ({ children }) => <View style={styles.container}>{children}</V
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: Style.variables.spacing.normal,
+    margin: Style.variables.spacing.normal,
   },
 });
 

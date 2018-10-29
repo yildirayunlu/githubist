@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { Routes } from '..';
 import Styles from '../../styles';
 import toDateString from '../../utils/toDateString';
 import { Container, Avatar, AppText, Loading, ErrorState, Highlight } from '../../components';
@@ -41,7 +42,7 @@ const Developer = props => {
     }
   `;
 
-  const { username } = props;
+  const { username, navigator } = props;
 
   return (
     <Query query={query} variables={{ username }}>
@@ -67,7 +68,18 @@ const Developer = props => {
                 <Highlight subject={data.developer.stats.rank} title="Github.ist Sıralaması" />
                 <Highlight subject={data.developer.stats.locationRank} title="Şehir Sıralaması" />
                 <Highlight subject={data.developer.totalStarred} title="Toplam Star'lanma" />
-                <Highlight subject={data.developer.stats.repositoriesCount} title="Repo" />
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    navigator.push({
+                      ...Routes.DeveloperRepositories,
+                      title: `${data.developer.name} Repo'ları`,
+                      passProps: { username: data.developer.username },
+                    });
+                  }}
+                >
+                  <Highlight subject={data.developer.stats.repositoriesCount} title="Repo" />
+                </TouchableOpacity>
                 <Highlight subject={data.developer.languageUsage.length} title="Dil Kullanımı" />
                 <Highlight subject={data.developer.followers} title="Takipçi" />
                 <Highlight subject={data.developer.following} title="Takip Edilen" />
