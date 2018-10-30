@@ -73,14 +73,25 @@ const Developer = props => {
                   onPress={() => {
                     navigator.push({
                       ...Routes.DeveloperRepositories,
-                      title: `${data.developer.name} Repo'ları`,
+                      title: "Repo'ları",
                       passProps: { username: data.developer.username },
                     });
                   }}
                 >
                   <Highlight subject={data.developer.stats.repositoriesCount} title="Repo" />
                 </TouchableOpacity>
-                <Highlight subject={data.developer.languageUsage.length} title="Dil Kullanımı" />
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    navigator.push({
+                      ...Routes.DeveloperLanguages,
+                      title: 'Dil Kullanımı',
+                      passProps: { username: data.developer.username },
+                    });
+                  }}
+                >
+                  <Highlight subject={data.developer.languageUsage.length} title="Dil Kullanımı" />
+                </TouchableOpacity>
                 <Highlight subject={data.developer.followers} title="Takipçi" />
                 <Highlight subject={data.developer.following} title="Takip Edilen" />
                 <Highlight subject={data.developer.location.name} title="Şehir" />

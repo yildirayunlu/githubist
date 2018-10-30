@@ -11,6 +11,7 @@ import Repositories from './Repositories';
 import Developer from './Developer';
 import Location from './Location';
 import DeveloperRepositories from './DeveloperRepositories';
+import DeveloperLanguages from './DeveloperLanguages';
 
 import iconDevelopers from '../../assets/images/icons/developers.png';
 import iconLocations from '../../assets/images/icons/locations.png';
@@ -88,6 +89,11 @@ export const Routes = {
     screen: 'app.DeveloperRepositories',
     generator: () => withProvider(DeveloperRepositories),
     title: 'DeveloperRepositories',
+  },
+  DeveloperLanguages: {
+    screen: 'app.DeveloperLanguages',
+    generator: () => withProvider(DeveloperLanguages),
+    title: 'DeveloperLanguages',
   },
 };
 
