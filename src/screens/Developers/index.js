@@ -1,62 +1,98 @@
 import React, { PureComponent } from 'react';
-import { TabView } from 'react-native-tab-view';
+import { View } from 'react-native';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
-import ByScore from './tabs/ByScore';
-import ByTotalStarred from './tabs/ByTotalStarred';
-import ByDate from './tabs/ByDate';
-import ByFollowers from './tabs/ByFollowers';
-
-import { TabBar } from '../../components';
+import { Routes } from '..';
+import {
+  Container,
+  Loading,
+  ErrorState,
+  ScreenHeading,
+  TabBar,
+  TabBarItem,
+} from '../../components';
+import DeveloperList from './DeveloperList';
 
 class Developers extends PureComponent {
-  constructor(props) {
-    super(props);
+  renderHeader = () => {
+    const query = gql`
+      query {
+        turkey {
+          totalDevelopers
+        }
+      }
+    `;
 
-    /* eslint-disable react/no-unused-state */
-    this.state = {
-      index: 0,
-      routes: [
-        { key: 'score', title: 'Sıralama' },
-        { key: 'totalStarred', title: "Star'lanma Sayısına Göre" },
-        { key: 'followers', title: 'Takipçi Sayısına Göre' },
-        { key: 'date', title: 'İlk Keşfedenler' },
-      ],
-    };
-    /* eslint-enable react/no-unused-state */
-  }
-
-  renderTabBar = props => <TabBar {...props} />;
-
-  renderScene = sceneProps => {
     const { navigator } = this.props;
 
-    switch (sceneProps.route.key) {
-      case 'score':
-        return <ByScore navigator={navigator} />;
+    return (
+      <Query query={query}>
+        {({ loading, error, data }) => {
+          if (loading) {
+            return <Loading />;
+          }
 
-      case 'totalStarred':
-        return <ByTotalStarred navigator={navigator} />;
+          if (error || !data) {
+            return <ErrorState />;
+          }
 
-      case 'followers':
-        return <ByFollowers navigator={navigator} />;
-
-      case 'date':
-        return <ByDate navigator={navigator} />;
-
-      default:
-        return null;
-    }
+          return (
+            <View>
+              <ScreenHeading>
+                {`Github.ist üzerinde toplam ${data.turkey.totalDevelopers} geliştirici bulunuyor.`}
+              </ScreenHeading>
+              <TabBar>
+                <TabBarItem isActive>Sıralama</TabBarItem>
+                <TabBarItem
+                  itemPressed={() => {
+                    navigator.push({
+                      ...Routes.DevelopersByTotalStarred,
+                      backButtonTitle: '',
+                    });
+                  }}
+                >
+                  Star&apos;lanma Sayısına Göre
+                </TabBarItem>
+                <TabBarItem
+                  itemPressed={() => {
+                    navigator.push({
+                      ...Routes.DevelopersByFollowers,
+                      backButtonTitle: '',
+                    });
+                  }}
+                >
+                  Takipçi Sayısına Göre
+                </TabBarItem>
+                <TabBarItem
+                  itemPressed={() => {
+                    navigator.push({
+                      ...Routes.DevelopersByDate,
+                      backButtonTitle: '',
+                    });
+                  }}
+                >
+                  İlk Keşfedenler
+                </TabBarItem>
+              </TabBar>
+            </View>
+          );
+        }}
+      </Query>
+    );
   };
 
   render() {
+    const { navigator } = this.props;
+
     return (
-      <TabView
-        navigationState={this.state}
-        renderTabBar={this.renderTabBar}
-        renderScene={this.renderScene}
-        // eslint-disable-next-line react/no-unused-state
-        onIndexChange={index => this.setState({ index })}
-      />
+      <Container>
+        <DeveloperList
+          header={this.renderHeader}
+          navigator={navigator}
+          orderBy={{ field: 'SCORE', direction: 'DESC' }}
+        />
+      </Container>
     );
   }
 }

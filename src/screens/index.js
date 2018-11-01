@@ -5,6 +5,9 @@ import { ApolloProvider } from 'react-apollo';
 import { createHttpLink } from 'apollo-link-http';
 
 import Developers from './Developers';
+import DevelopersByTotalStarred from './Developers/tabs/ByTotalStarred';
+import DevelopersByFollowers from './Developers/tabs/ByFollowers';
+import DevelopersByDate from './Developers/tabs/ByDate';
 import Locations from './Locations';
 import Languages from './Languages';
 import Repositories from './Repositories';
@@ -53,6 +56,21 @@ export const Routes = {
     title: 'Geliştiriciler',
     label: 'Geliştiriciler',
     icon: iconDevelopers,
+  },
+  DevelopersByTotalStarred: {
+    screen: 'app.DevelopersByTotalStarred',
+    generator: () => withProvider(DevelopersByTotalStarred),
+    title: "Star'lanma Sayısına Göre",
+  },
+  DevelopersByFollowers: {
+    screen: 'app.DevelopersByFollowers',
+    generator: () => withProvider(DevelopersByFollowers),
+    title: 'Takipçi Sayısına Göre',
+  },
+  DevelopersByDate: {
+    screen: 'app.DevelopersByDate',
+    generator: () => withProvider(DevelopersByDate),
+    title: 'İlk Keşfedenler',
   },
   Locations: {
     screen: 'app.Locations',

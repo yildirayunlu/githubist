@@ -1,7 +1,7 @@
 export { default as TabBar, TabBarItem } from './TabBar';
 export { default as AppText } from './AppText';
 export { default as Container } from './Container';
-export { default as Heading } from './Heading';
+export { default as ScreenHeading } from './Heading';
 export { default as Box } from './Box';
 export { default as Avatar } from './Avatar';
 export { default as DeveloperCard } from './DeveloperCard';

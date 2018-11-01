@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { Routes } from '..';
-import { Loading, Container, DeveloperCard, ErrorState } from '../../components';
+import { Loading, DeveloperCard, ErrorState } from '../../components';
 
 class DeveloperList extends PureComponent {
   constructor(props) {
@@ -73,7 +73,7 @@ class DeveloperList extends PureComponent {
       }
     `;
 
-    const { orderBy, navigator } = this.props;
+    const { orderBy, navigator, header } = this.props;
     const { loadMoreLoading } = this.state;
 
     return (
@@ -88,46 +88,46 @@ class DeveloperList extends PureComponent {
           }
 
           return (
-            <Container>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={data.developers}
-                renderItem={({ item, index }) => (
-                  <DeveloperCard
-                    onPressUser={() => {
-                      navigator.push({
-                        ...Routes.Developer,
-                        title: item.name,
-                        passProps: { username: item.username },
-                      });
-                    }}
-                    onPressLocation={() => {
-                      navigator.push({
-                        ...Routes.Location,
-                        title: item.location.name,
-                        passProps: { location: item.location.slug },
-                      });
-                    }}
-                    key={item.id}
-                    rank={index + 1}
-                    name={item.name}
-                    username={item.username}
-                    profilePicture={item.avatarUrl}
-                    company={item.company}
-                    totalStarred={item.totalStarred}
-                    followers={item.followers}
-                    location={item.location.name}
-                    repositoriesCount={item.stats.repositoriesCount}
-                  />
-                )}
-                numColumns={1}
-                keyExtractor={(item, index) => `developers-${orderBy.field}-${index}`}
-                onEndReached={() => {
-                  this.loadMoreContent(data, error, fetchMore);
-                }}
-                ListFooterComponent={loadMoreLoading && <Loading />}
-              />
-            </Container>
+            <FlatList
+              style={{ paddingTop: 15 }}
+              showsVerticalScrollIndicator={false}
+              data={data.developers}
+              renderItem={({ item, index }) => (
+                <DeveloperCard
+                  onPressUser={() => {
+                    navigator.push({
+                      ...Routes.Developer,
+                      title: item.name,
+                      passProps: { username: item.username },
+                    });
+                  }}
+                  onPressLocation={() => {
+                    navigator.push({
+                      ...Routes.Location,
+                      title: item.location.name,
+                      passProps: { location: item.location.slug },
+                    });
+                  }}
+                  key={item.id}
+                  rank={index + 1}
+                  name={item.name}
+                  username={item.username}
+                  profilePicture={item.avatarUrl}
+                  company={item.company}
+                  totalStarred={item.totalStarred}
+                  followers={item.followers}
+                  location={item.location.name}
+                  repositoriesCount={item.stats.repositoriesCount}
+                />
+              )}
+              numColumns={1}
+              keyExtractor={(item, index) => `developers-${orderBy.field}-${index}`}
+              onEndReached={() => {
+                this.loadMoreContent(data, error, fetchMore);
+              }}
+              ListHeaderComponent={header}
+              ListFooterComponent={loadMoreLoading && <Loading />}
+            />
           );
         }}
       </Query>
