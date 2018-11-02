@@ -12,6 +12,8 @@ import Locations from './Locations';
 import LocationsByTotalDevelopers from './Locations/tabs/ByTotalDevelopers';
 import LocationsByTotalRepositories from './Locations/tabs/ByTotalRepositories';
 import Languages from './Languages';
+import LanguagesByTotalDevelopers from './Languages/tabs/ByTotalDevelopers';
+import LanguagesByTotalRepositories from './Languages/tabs/ByTotalRepositories';
 import Repositories from './Repositories';
 import Developer from './Developer';
 import Location from './Location';
@@ -95,6 +97,16 @@ export const Routes = {
     title: 'Languages',
     label: 'Languages',
     icon: iconLanguages,
+  },
+  LanguagesByTotalDevelopers: {
+    screen: 'app.LanguagesByTotalDevelopers',
+    generator: () => withProvider(LanguagesByTotalDevelopers),
+    title: 'Geliştirici Sayısına Göre',
+  },
+  LanguagesByTotalRepositories: {
+    screen: 'app.LanguagesByTotalRepositories',
+    generator: () => withProvider(LanguagesByTotalRepositories),
+    title: 'Repo Sayısına Göre',
   },
   Repositories: {
     screen: 'app.Repositories',

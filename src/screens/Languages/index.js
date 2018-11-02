@@ -1,55 +1,88 @@
 import React, { PureComponent } from 'react';
-import { TabView } from 'react-native-tab-view';
+import { View } from 'react-native';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
-import ByScore from './tabs/ByScore';
-import ByTotalDevelopers from './tabs/ByTotalDevelopers';
-import ByTotalRepositories from './tabs/ByTotalRepositories';
-
-import { TabBar } from '../../components';
+import { Routes } from '..';
+import {
+  Container,
+  Loading,
+  ErrorState,
+  ScreenHeading,
+  TabBar,
+  TabBarItem,
+} from '../../components';
+import LangaugeList from './LanguageList';
 
 class Languages extends PureComponent {
-  constructor(props) {
-    super(props);
+  renderHeader = () => {
+    const query = gql`
+      query {
+        turkey {
+          totalLanguages
+        }
+      }
+    `;
 
-    /* eslint-disable react/no-unused-state */
-    this.state = {
-      index: 0,
-      routes: [
-        { key: 'score', title: 'Sıralama' },
-        { key: 'totalDevelopers', title: 'Geliştirici Sayısına Göre' },
-        { key: 'totalRepositories', title: 'Repo Sayısına Göre' },
-      ],
-    };
-    /* eslint-enable react/no-unused-state */
-  }
+    const { navigator } = this.props;
 
-  renderTabBar = props => <TabBar {...props} />;
+    return (
+      <Query query={query}>
+        {({ loading, error, data }) => {
+          if (loading) {
+            return <Loading />;
+          }
 
-  renderScene = sceneProps => {
-    switch (sceneProps.route.key) {
-      case 'score':
-        return <ByScore />;
+          if (error || !data) {
+            return <ErrorState />;
+          }
 
-      case 'totalDevelopers':
-        return <ByTotalDevelopers />;
-
-      case 'totalRepositories':
-        return <ByTotalRepositories />;
-
-      default:
-        return null;
-    }
+          return (
+            <View>
+              <ScreenHeading>
+                {`Github.ist'de ${data.turkey.totalLanguages} dil bulunuyor.`}
+              </ScreenHeading>
+              <TabBar>
+                <TabBarItem isActive>Sıralama</TabBarItem>
+                <TabBarItem
+                  itemPressed={() => {
+                    navigator.push({
+                      ...Routes.LanguagesByTotalDevelopers,
+                      backButtonTitle: '',
+                    });
+                  }}
+                >
+                  Geliştirici Sayısına Göre
+                </TabBarItem>
+                <TabBarItem
+                  itemPressed={() => {
+                    navigator.push({
+                      ...Routes.LanguagesByTotalRepositories,
+                      backButtonTitle: '',
+                    });
+                  }}
+                >
+                  Repo Sayısına Göre
+                </TabBarItem>
+              </TabBar>
+            </View>
+          );
+        }}
+      </Query>
+    );
   };
 
   render() {
+    const { navigator } = this.props;
+
     return (
-      <TabView
-        navigationState={this.state}
-        renderTabBar={this.renderTabBar}
-        renderScene={this.renderScene}
-        // eslint-disable-next-line react/no-unused-state
-        onIndexChange={index => this.setState({ index })}
-      />
+      <Container>
+        <LangaugeList
+          header={this.renderHeader}
+          navigator={navigator}
+          orderBy={{ field: 'SCORE', direction: 'DESC' }}
+        />
+      </Container>
     );
   }
 }

@@ -3,7 +3,8 @@ import { FlatList } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Loading, Container, LanguageCard, ErrorState } from '../../components';
+import { Routes } from '..';
+import { Loading, LanguageCard, ErrorState } from '../../components';
 
 class LocationList extends PureComponent {
   constructor(props) {
@@ -63,7 +64,7 @@ class LocationList extends PureComponent {
       }
     `;
 
-    const { orderBy, headerComponent } = this.props;
+    const { orderBy, navigator, header } = this.props;
     const { loadMoreLoading } = this.state;
 
     return (
@@ -78,28 +79,27 @@ class LocationList extends PureComponent {
           }
 
           return (
-            <Container>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={data.languages}
-                renderItem={({ item, index }) => (
-                  <LanguageCard
-                    key={index}
-                    rank={index + 1}
-                    name={item.name}
-                    totalRepositories={item.totalRepositories}
-                    totalDevelopers={item.totalDevelopers}
-                  />
-                )}
-                numColumns={1}
-                keyExtractor={(item, index) => `language-${orderBy.field}-${index}`}
-                onEndReached={() => {
-                  this.loadMoreContent(data, error, fetchMore);
-                }}
-                ListFooterComponent={loadMoreLoading && <Loading />}
-                ListHeaderComponent={headerComponent}
-              />
-            </Container>
+            <FlatList
+              style={{ paddingTop: 15 }}
+              showsVerticalScrollIndicator={false}
+              data={data.languages}
+              renderItem={({ item, index }) => (
+                <LanguageCard
+                  key={index}
+                  rank={index + 1}
+                  name={item.name}
+                  totalRepositories={item.totalRepositories}
+                  totalDevelopers={item.totalDevelopers}
+                />
+              )}
+              numColumns={1}
+              keyExtractor={(item, index) => `language-${orderBy.field}-${index}`}
+              onEndReached={() => {
+                this.loadMoreContent(data, error, fetchMore);
+              }}
+              ListFooterComponent={loadMoreLoading && <Loading />}
+              ListHeaderComponent={header}
+            />
           );
         }}
       </Query>
