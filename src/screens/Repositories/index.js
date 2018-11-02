@@ -1,57 +1,90 @@
 import React, { PureComponent } from 'react';
-import { TabView } from 'react-native-tab-view';
+import { View } from 'react-native';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
-import ByDate from './tabs/ByDate';
-import ByForks from './tabs/ByForks';
-import ByStars from './tabs/ByStars';
+import { Routes } from '..';
+import {
+  Container,
+  Loading,
+  ErrorState,
+  ScreenHeading,
+  TabBar,
+  TabBarItem,
+} from '../../components';
+import RepositoryList from './RepositoryList';
 
-import { TabBar } from '../../components';
+class Repositories extends PureComponent {
+  renderHeader = () => {
+    const query = gql`
+      query {
+        turkey {
+          totalRepositories
+        }
+      }
+    `;
 
-class Locations extends PureComponent {
-  constructor(props) {
-    super(props);
+    const { navigator } = this.props;
 
-    /* eslint-disable react/no-unused-state */
-    this.state = {
-      index: 0,
-      routes: [
-        { key: 'stars', title: "Star'a Göre" },
-        { key: 'forks', title: "Fork'lara Göre" },
-        { key: 'date', title: 'İlk Repolar' },
-      ],
-    };
-    /* eslint-enable react/no-unused-state */
-  }
+    return (
+      <Query query={query}>
+        {({ loading, error, data }) => {
+          if (loading) {
+            return <Loading />;
+          }
 
-  renderTabBar = props => <TabBar {...props} />;
+          if (error || !data) {
+            return <ErrorState />;
+          }
 
-  renderScene = sceneProps => {
-    switch (sceneProps.route.key) {
-      case 'stars':
-        return <ByStars />;
-
-      case 'forks':
-        return <ByForks />;
-
-      case 'date':
-        return <ByDate />;
-
-      default:
-        return null;
-    }
+          return (
+            <View>
+              <ScreenHeading>
+                {`Github.ist'de ${data.turkey.totalRepositories} repo bulunuyor.`}
+              </ScreenHeading>
+              <TabBar>
+                <TabBarItem isActive>Star&apos;a Göre</TabBarItem>
+                <TabBarItem
+                  itemPressed={() => {
+                    navigator.push({
+                      ...Routes.RepositoriesByForks,
+                      backButtonTitle: '',
+                    });
+                  }}
+                >
+                  Fork&apos;a Göre
+                </TabBarItem>
+                <TabBarItem
+                  itemPressed={() => {
+                    navigator.push({
+                      ...Routes.RepositoriesByDate,
+                      backButtonTitle: '',
+                    });
+                  }}
+                >
+                  İlk Repolar
+                </TabBarItem>
+              </TabBar>
+            </View>
+          );
+        }}
+      </Query>
+    );
   };
 
   render() {
+    const { navigator } = this.props;
+
     return (
-      <TabView
-        navigationState={this.state}
-        renderTabBar={this.renderTabBar}
-        renderScene={this.renderScene}
-        // eslint-disable-next-line react/no-unused-state
-        onIndexChange={index => this.setState({ index })}
-      />
+      <Container>
+        <RepositoryList
+          header={this.renderHeader}
+          navigator={navigator}
+          orderBy={{ field: 'STARS', direction: 'DESC' }}
+        />
+      </Container>
     );
   }
 }
 
-export default Locations;
+export default Repositories;

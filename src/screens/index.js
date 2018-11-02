@@ -15,6 +15,8 @@ import Languages from './Languages';
 import LanguagesByTotalDevelopers from './Languages/tabs/ByTotalDevelopers';
 import LanguagesByTotalRepositories from './Languages/tabs/ByTotalRepositories';
 import Repositories from './Repositories';
+import RepositoriesByForks from './Repositories/tabs/ByForks';
+import RepositoriesByDate from './Repositories/tabs/ByDate';
 import Developer from './Developer';
 import Location from './Location';
 
@@ -114,6 +116,16 @@ export const Routes = {
     title: 'Repositories',
     label: 'Repositories',
     icon: iconRepositories,
+  },
+  RepositoriesByForks: {
+    screen: 'app.RepositoriesByForks',
+    generator: () => withProvider(RepositoriesByForks),
+    title: "Fork'a Göre",
+  },
+  RepositoriesByDate: {
+    screen: 'app.RepositoriesByDate',
+    generator: () => withProvider(RepositoriesByDate),
+    title: 'İlk Repolar',
   },
   Developer: {
     screen: 'app.Developer',

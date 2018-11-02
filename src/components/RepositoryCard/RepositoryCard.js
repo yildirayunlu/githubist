@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
+import toDateString from '../../utils/toDateString';
 import Style from '../../styles';
 import { Box, AppText } from '..';
 
@@ -26,7 +27,7 @@ const RepositoryCard = ({ rank, slug, description, language, stars, forks, githu
           <AppText className={styles.metaItem}>{`${forks} Fork`}</AppText>
         </View>
         <View style={styles.metaItem}>
-          <AppText className={styles.metaItem}>{githubCreatedAt}</AppText>
+          <AppText className={styles.metaItem}>{toDateString(githubCreatedAt)}</AppText>
         </View>
       </View>
     </Box>
@@ -41,12 +42,12 @@ const styles = StyleSheet.create({
   meta: {
     marginTop: Style.variables.spacing.xSmall,
     alignSelf: 'flex-start',
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   metaItem: {
     fontWeight: '400',
     marginBottom: Style.variables.fontSizes.xxSmall / 4,
-    marginRight: Style.variables.fontSizes.xxSmall,
+    marginRight: Style.variables.fontSizes.xxSmall / 2,
   },
   language: {
     fontWeight: '500',

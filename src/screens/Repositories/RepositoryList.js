@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Loading, Container, RepositoryCard, ErrorState } from '../../components';
+import { Loading, ErrorState, RepositoryCard } from '../../components';
 
 class RepositoryList extends PureComponent {
   constructor(props) {
@@ -68,7 +68,7 @@ class RepositoryList extends PureComponent {
       }
     `;
 
-    const { orderBy, headerComponent } = this.props;
+    const { orderBy, header } = this.props;
     const { loadMoreLoading } = this.state;
 
     return (
@@ -83,31 +83,30 @@ class RepositoryList extends PureComponent {
           }
 
           return (
-            <Container>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={data.repositories}
-                renderItem={({ item, index }) => (
-                  <RepositoryCard
-                    key={index}
-                    rank={index + 1}
-                    slug={item.slug}
-                    description={item.description}
-                    language={item.language}
-                    stars={item.stars}
-                    forks={item.forks}
-                    githubCreatedAt={item.githubCreatedAt}
-                  />
-                )}
-                numColumns={1}
-                keyExtractor={(item, index) => `location-${orderBy.field}-${index}`}
-                onEndReached={() => {
-                  this.loadMoreContent(data, error, fetchMore);
-                }}
-                ListFooterComponent={loadMoreLoading && <Loading />}
-                ListHeaderComponent={headerComponent}
-              />
-            </Container>
+            <FlatList
+              style={{ paddingTop: 15 }}
+              showsVerticalScrollIndicator={false}
+              data={data.repositories}
+              renderItem={({ item, index }) => (
+                <RepositoryCard
+                  key={index}
+                  rank={index + 1}
+                  slug={item.slug}
+                  description={item.description}
+                  language={item.language}
+                  stars={item.stars}
+                  forks={item.forks}
+                  githubCreatedAt={item.githubCreatedAt}
+                />
+              )}
+              numColumns={1}
+              keyExtractor={(item, index) => `location-${orderBy.field}-${index}`}
+              onEndReached={() => {
+                this.loadMoreContent(data, error, fetchMore);
+              }}
+              ListFooterComponent={loadMoreLoading && <Loading />}
+              ListHeaderComponent={header}
+            />
           );
         }}
       </Query>

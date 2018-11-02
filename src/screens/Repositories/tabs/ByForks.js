@@ -1,6 +1,12 @@
 import React from 'react';
 import RepositoryList from '../RepositoryList';
 
-const ByForks = () => <RepositoryList orderBy={{ field: 'FORKS', direction: 'DESC' }} />;
+import { Container } from '../../../components';
+
+const ByForks = () => (
+  <Container>
+    <RepositoryList orderBy={{ field: 'FORKS', direction: 'DESC' }} />
+  </Container>
+);
 
 export default ByForks;

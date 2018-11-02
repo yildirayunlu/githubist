@@ -1,6 +1,12 @@
 import React from 'react';
 import RepositoryList from '../RepositoryList';
 
-const ByDate = () => <RepositoryList orderBy={{ field: 'GITHUB_CREATED_AT', direction: 'ASC' }} />;
+import { Container } from '../../../components';
+
+const ByDate = () => (
+  <Container>
+    <RepositoryList orderBy={{ field: 'GITHUB_CREATED_AT', direction: 'ASC' }} />
+  </Container>
+);
 
 export default ByDate;
