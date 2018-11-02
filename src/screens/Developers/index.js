@@ -40,7 +40,7 @@ class Developers extends PureComponent {
           return (
             <View>
               <ScreenHeading>
-                {`Github.ist üzerinde toplam ${data.turkey.totalDevelopers} geliştirici bulunuyor.`}
+                {`Github.ist'de ${data.turkey.totalDevelopers} geliştirici bulunuyor.`}
               </ScreenHeading>
               <TabBar>
                 <TabBarItem isActive>Sıralama</TabBarItem>

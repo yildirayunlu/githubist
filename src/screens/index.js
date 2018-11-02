@@ -9,12 +9,12 @@ import DevelopersByTotalStarred from './Developers/tabs/ByTotalStarred';
 import DevelopersByFollowers from './Developers/tabs/ByFollowers';
 import DevelopersByDate from './Developers/tabs/ByDate';
 import Locations from './Locations';
+import LocationsByTotalDevelopers from './Locations/tabs/ByTotalDevelopers';
+import LocationsByTotalRepositories from './Locations/tabs/ByTotalRepositories';
 import Languages from './Languages';
 import Repositories from './Repositories';
 import Developer from './Developer';
 import Location from './Location';
-import DeveloperRepositories from './DeveloperRepositories';
-import DeveloperLanguages from './DeveloperLanguages';
 
 import iconDevelopers from '../../assets/images/icons/developers.png';
 import iconLocations from '../../assets/images/icons/locations.png';
@@ -79,6 +79,16 @@ export const Routes = {
     label: 'Şehirler',
     icon: iconLocations,
   },
+  LocationsByTotalDevelopers: {
+    screen: 'app.LocationsByTotalDevelopers',
+    generator: () => withProvider(LocationsByTotalDevelopers),
+    title: 'Geliştirici Sayısına Göre',
+  },
+  LocationsByTotalRepositories: {
+    screen: 'app.LocationsByTotalRepositories',
+    generator: () => withProvider(LocationsByTotalRepositories),
+    title: 'Repo Sayısına Göre',
+  },
   Languages: {
     screen: 'app.Languages',
     generator: () => withProvider(Languages),
@@ -102,16 +112,6 @@ export const Routes = {
     screen: 'app.Location',
     generator: () => withProvider(Location),
     title: 'Location',
-  },
-  DeveloperRepositories: {
-    screen: 'app.DeveloperRepositories',
-    generator: () => withProvider(DeveloperRepositories),
-    title: 'DeveloperRepositories',
-  },
-  DeveloperLanguages: {
-    screen: 'app.DeveloperLanguages',
-    generator: () => withProvider(DeveloperLanguages),
-    title: 'DeveloperLanguages',
   },
 };
 

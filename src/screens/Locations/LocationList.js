@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Loading, Container, LocationCard, ErrorState } from '../../components';
+import { Loading, LocationCard, ErrorState } from '../../components';
 
 class LocationList extends PureComponent {
   constructor(props) {
@@ -69,7 +69,7 @@ class LocationList extends PureComponent {
       }
     `;
 
-    const { orderBy, headerComponent } = this.props;
+    const { orderBy, header } = this.props;
     const { loadMoreLoading } = this.state;
 
     return (
@@ -84,34 +84,31 @@ class LocationList extends PureComponent {
           }
 
           return (
-            <Container>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={data.locations}
-                renderItem={({ item, index }) => (
-                  <LocationCard
-                    key={index}
-                    rank={index + 1}
-                    name={item.name}
-                    // slug={item.slug}
-                    totalRepositories={item.totalRepositories}
-                    totalDevelopers={item.totalDevelopers}
-                    language={
-                      item.languageUsage.length > 0
-                        ? item.languageUsage[0].language.name
-                        : undefined
-                    }
-                  />
-                )}
-                numColumns={1}
-                keyExtractor={(item, index) => `location-${orderBy.field}-${index}`}
-                onEndReached={() => {
-                  this.loadMoreContent(data, error, fetchMore);
-                }}
-                ListFooterComponent={loadMoreLoading && <Loading />}
-                ListHeaderComponent={headerComponent}
-              />
-            </Container>
+            <FlatList
+              style={{ paddingTop: 15 }}
+              showsVerticalScrollIndicator={false}
+              data={data.locations}
+              renderItem={({ item, index }) => (
+                <LocationCard
+                  key={index}
+                  rank={index + 1}
+                  name={item.name}
+                  // slug={item.slug}
+                  totalRepositories={item.totalRepositories}
+                  totalDevelopers={item.totalDevelopers}
+                  language={
+                    item.languageUsage.length > 0 ? item.languageUsage[0].language.name : undefined
+                  }
+                />
+              )}
+              numColumns={1}
+              keyExtractor={(item, index) => `location-${orderBy.field}-${index}`}
+              onEndReached={() => {
+                this.loadMoreContent(data, error, fetchMore);
+              }}
+              ListFooterComponent={loadMoreLoading && <Loading />}
+              ListHeaderComponent={header}
+            />
           );
         }}
       </Query>

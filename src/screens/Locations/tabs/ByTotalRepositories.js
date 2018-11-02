@@ -1,8 +1,15 @@
 import React from 'react';
 import LocationList from '../LocationList';
 
-const ByTotalRepositories = () => (
-  <LocationList orderBy={{ field: 'TOTAL_REPOSITORIES', direction: 'DESC' }} />
+import { Container } from '../../../components';
+
+const ByTotalRepositories = ({ navigator }) => (
+  <Container>
+    <LocationList
+      navigator={navigator}
+      orderBy={{ field: 'TOTAL_REPOSITORIES', direction: 'DESC' }}
+    />
+  </Container>
 );
 
 export default ByTotalRepositories;
