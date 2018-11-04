@@ -40,7 +40,7 @@ const DeveloperRepositories = props => {
         }
 
         return (
-          <ScrollView>
+          <ScrollView style={{ paddingTop: 15 }}>
             <Container>
               {data.developer.repositories.map((repository, index) => (
                 <RepositoryCard

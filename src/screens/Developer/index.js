@@ -1,12 +1,21 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { Routes } from '..';
 import Styles from '../../styles';
 import toDateString from '../../utils/toDateString';
-import { Container, Avatar, AppText, Loading, ErrorState, Highlight } from '../../components';
+import {
+  Container,
+  Avatar,
+  TabBar,
+  TabBarItem,
+  AppText,
+  Loading,
+  ErrorState,
+  Highlight,
+} from '../../components';
 
 const Developer = props => {
   const query = gql`
@@ -64,34 +73,45 @@ const Developer = props => {
                 <AppText style={styles.username}>{data.developer.username}</AppText>
                 {data.developer.bio && <AppText style={styles.bio}>{data.developer.bio}</AppText>}
               </View>
+
+              <TabBar>
+                <TabBarItem isActive>Genel Bilgiler</TabBarItem>
+                <TabBarItem
+                  itemPressed={() => {
+                    navigator.push({
+                      ...Routes.DeveloperRepositories,
+                      backButtonTitle: '',
+                      passProps: { username: data.developer.username },
+                    });
+                  }}
+                >
+                  Meşhur Repolar
+                </TabBarItem>
+                <TabBarItem
+                  itemPressed={() => {
+                    navigator.push({
+                      ...Routes.DeveloperLanguages,
+                      backButtonTitle: '',
+                      passProps: { username: data.developer.username },
+                    });
+                  }}
+                >
+                  Dil Kullanımı
+                </TabBarItem>
+                <TabBarItem
+                  itemPressed={() => {
+                    // alert('TODO');
+                  }}
+                >
+                  Github&apos;da Görüntüle
+                </TabBarItem>
+              </TabBar>
               <View>
                 <Highlight subject={data.developer.stats.rank} title="Github.ist Sıralaması" />
                 <Highlight subject={data.developer.stats.locationRank} title="Şehir Sıralaması" />
                 <Highlight subject={data.developer.totalStarred} title="Toplam Star'lanma" />
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => {
-                    navigator.push({
-                      ...Routes.DeveloperRepositories,
-                      title: "Repo'ları",
-                      passProps: { username: data.developer.username },
-                    });
-                  }}
-                >
-                  <Highlight subject={data.developer.stats.repositoriesCount} title="Repo" />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => {
-                    navigator.push({
-                      ...Routes.DeveloperLanguages,
-                      title: 'Dil Kullanımı',
-                      passProps: { username: data.developer.username },
-                    });
-                  }}
-                >
-                  <Highlight subject={data.developer.languageUsage.length} title="Dil Kullanımı" />
-                </TouchableOpacity>
+                <Highlight subject={data.developer.stats.repositoriesCount} title="Repo" />
+                <Highlight subject={data.developer.languageUsage.length} title="Dil Kullanımı" />
                 <Highlight subject={data.developer.followers} title="Takipçi" />
                 <Highlight subject={data.developer.following} title="Takip Edilen" />
                 <Highlight subject={data.developer.location.name} title="Şehir" />
@@ -113,7 +133,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     paddingVertical: Styles.variables.spacing.normal,
-    marginBottom: Styles.variables.spacing.normal,
   },
   name: {
     fontSize: Styles.variables.headingSizes.h2,

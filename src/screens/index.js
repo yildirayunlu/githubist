@@ -4,21 +4,30 @@ import { ApolloClient, InMemoryCache } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { createHttpLink } from 'apollo-link-http';
 
+// Developers
 import Developers from './Developers';
 import DevelopersByTotalStarred from './Developers/tabs/ByTotalStarred';
 import DevelopersByFollowers from './Developers/tabs/ByFollowers';
 import DevelopersByDate from './Developers/tabs/ByDate';
+import DeveloperRepositories from './DeveloperRepositories';
+import DeveloperLanguages from './DeveloperLanguages';
+import Developer from './Developer';
+
+// Locations
 import Locations from './Locations';
 import LocationsByTotalDevelopers from './Locations/tabs/ByTotalDevelopers';
 import LocationsByTotalRepositories from './Locations/tabs/ByTotalRepositories';
+
+// Languages
 import Languages from './Languages';
 import LanguagesByTotalDevelopers from './Languages/tabs/ByTotalDevelopers';
 import LanguagesByTotalRepositories from './Languages/tabs/ByTotalRepositories';
+import Location from './Location';
+
+// Respositories
 import Repositories from './Repositories';
 import RepositoriesByForks from './Repositories/tabs/ByForks';
 import RepositoriesByDate from './Repositories/tabs/ByDate';
-import Developer from './Developer';
-import Location from './Location';
 
 import iconDevelopers from '../../assets/images/icons/developers.png';
 import iconLocations from '../../assets/images/icons/locations.png';
@@ -39,8 +48,8 @@ const localClient = new ApolloClient({
   cache,
 });
 
-const withProvider = (Component, client = localClient) => {
-  return class extends React.Component {
+const withProvider = (Component, client = localClient) =>
+  class extends React.Component {
     static options = Component.options;
 
     render() {
@@ -51,7 +60,6 @@ const withProvider = (Component, client = localClient) => {
       );
     }
   };
-};
 
 export const Routes = {
   Developers: {
@@ -76,6 +84,22 @@ export const Routes = {
     generator: () => withProvider(DevelopersByDate),
     title: 'İlk Keşfedenler',
   },
+  DeveloperRepositories: {
+    screen: 'app.DeveloperRepositories',
+    generator: () => withProvider(DeveloperRepositories),
+    title: 'Meşhur Repoları',
+  },
+  DeveloperLanguages: {
+    screen: 'app.DeveloperLanguages',
+    generator: () => withProvider(DeveloperLanguages),
+    title: 'Dil Kullanımı',
+  },
+  Developer: {
+    screen: 'app.Developer',
+    generator: () => withProvider(Developer),
+    title: 'Developer',
+  },
+
   Locations: {
     screen: 'app.Locations',
     generator: () => withProvider(Locations),
@@ -93,6 +117,12 @@ export const Routes = {
     generator: () => withProvider(LocationsByTotalRepositories),
     title: 'Repo Sayısına Göre',
   },
+  Location: {
+    screen: 'app.Location',
+    generator: () => withProvider(Location),
+    title: 'Location',
+  },
+
   Languages: {
     screen: 'app.Languages',
     generator: () => withProvider(Languages),
@@ -110,6 +140,7 @@ export const Routes = {
     generator: () => withProvider(LanguagesByTotalRepositories),
     title: 'Repo Sayısına Göre',
   },
+
   Repositories: {
     screen: 'app.Repositories',
     generator: () => withProvider(Repositories),
@@ -126,16 +157,6 @@ export const Routes = {
     screen: 'app.RepositoriesByDate',
     generator: () => withProvider(RepositoriesByDate),
     title: 'İlk Repolar',
-  },
-  Developer: {
-    screen: 'app.Developer',
-    generator: () => withProvider(Developer),
-    title: 'Developer',
-  },
-  Location: {
-    screen: 'app.Location',
-    generator: () => withProvider(Location),
-    title: 'Location',
   },
 };
 

@@ -11,7 +11,7 @@ const DeveloperLanguages = props => {
       developer(username: $username) {
         id
         username
-        languageUsage(limit: 999, offset: 0) {
+        languageUsage(limit: 9999, offset: 0) {
           language {
             id
             name
@@ -36,7 +36,7 @@ const DeveloperLanguages = props => {
         }
 
         return (
-          <ScrollView>
+          <ScrollView style={{ paddingTop: 15 }}>
             <Container>
               {data.developer.languageUsage.map((language, index) => (
                 <LanguageCard
