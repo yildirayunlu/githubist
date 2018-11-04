@@ -26,9 +26,11 @@ const RepositoryCard = ({ rank, slug, description, language, stars, forks, githu
         <View style={styles.metaItem}>
           <AppText className={styles.metaItem}>{`${forks} Fork`}</AppText>
         </View>
-        <View style={styles.metaItem}>
-          <AppText className={styles.metaItem}>{toDateString(githubCreatedAt)}</AppText>
-        </View>
+        {githubCreatedAt && (
+          <View style={styles.metaItem}>
+            <AppText className={styles.metaItem}>{toDateString(githubCreatedAt)}</AppText>
+          </View>
+        )}
       </View>
     </Box>
   </TouchableOpacity>
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
 RepositoryCard.defaultProps = {
   rank: undefined,
   description: '',
-  githubCreatedAt: '',
+  githubCreatedAt: undefined,
 };
 
 export default RepositoryCard;
