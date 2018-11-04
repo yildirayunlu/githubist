@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import { FlatList } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Loading, LocationCard, ErrorState } from '../../components';
+import { Routes } from '..';
+import { Loading, List, LocationCard, ErrorState } from '../../components';
 
 class LocationList extends PureComponent {
   constructor(props) {
@@ -69,7 +69,7 @@ class LocationList extends PureComponent {
       }
     `;
 
-    const { orderBy, header } = this.props;
+    const { orderBy, header, navigator } = this.props;
     const { loadMoreLoading } = this.state;
 
     return (
@@ -84,7 +84,7 @@ class LocationList extends PureComponent {
           }
 
           return (
-            <FlatList
+            <List
               style={{ paddingTop: 15 }}
               showsVerticalScrollIndicator={false}
               data={data.locations}
@@ -93,12 +93,20 @@ class LocationList extends PureComponent {
                   key={index}
                   rank={index + 1}
                   name={item.name}
-                  // slug={item.slug}
                   totalRepositories={item.totalRepositories}
                   totalDevelopers={item.totalDevelopers}
                   language={
                     item.languageUsage.length > 0 ? item.languageUsage[0].language.name : undefined
                   }
+                  onPressLocation={() => {
+                    navigator.push({
+                      ...Routes.Location,
+                      title: item.name,
+                      passProps: { slug: item.slug },
+                    });
+                  }}
+                  // TODO: push langauge detail screen
+                  onPressLanguage={() => {}}
                 />
               )}
               numColumns={1}

@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
-import { FlatList } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Loading, ErrorState, RepositoryCard } from '../../components';
+import { Loading, List, ErrorState, RepositoryCard } from '../../components';
 
 class RepositoryList extends PureComponent {
   constructor(props) {
@@ -83,7 +82,7 @@ class RepositoryList extends PureComponent {
           }
 
           return (
-            <FlatList
+            <List
               style={{ paddingTop: 15 }}
               showsVerticalScrollIndicator={false}
               data={data.repositories}

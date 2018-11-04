@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
-import { FlatList } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { Routes } from '..';
-import { Loading, DeveloperCard, ErrorState } from '../../components';
+import { Loading, List, DeveloperCard, ErrorState } from '../../components';
 
 class DeveloperList extends PureComponent {
   constructor(props) {
@@ -88,8 +87,7 @@ class DeveloperList extends PureComponent {
           }
 
           return (
-            <FlatList
-              style={{ paddingTop: 15 }}
+            <List
               showsVerticalScrollIndicator={false}
               data={data.developers}
               renderItem={({ item, index }) => (
@@ -105,7 +103,7 @@ class DeveloperList extends PureComponent {
                     navigator.push({
                       ...Routes.Location,
                       title: item.location.name,
-                      passProps: { location: item.location.slug },
+                      passProps: { slug: item.location.slug },
                     });
                   }}
                   key={item.id}

@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
-import { FlatList } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { Routes } from '..';
-import { Loading, LanguageCard, ErrorState } from '../../components';
+import { Loading, List, LanguageCard, ErrorState } from '../../components';
 
 class LocationList extends PureComponent {
   constructor(props) {
@@ -79,7 +78,7 @@ class LocationList extends PureComponent {
           }
 
           return (
-            <FlatList
+            <List
               style={{ paddingTop: 15 }}
               showsVerticalScrollIndicator={false}
               data={data.languages}

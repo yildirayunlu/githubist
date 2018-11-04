@@ -4,25 +4,33 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Style from '../../styles';
 import { Box, AppText } from '..';
 
-const LocationCard = ({ rank, name, totalRepositories, totalDevelopers, language }) => (
-  <TouchableOpacity activeOpacity={0.8}>
-    <Box>
+const LocationCard = ({
+  rank,
+  name,
+  totalRepositories,
+  totalDevelopers,
+  language,
+  onPressLocation,
+  onPressLanguage,
+}) => (
+  <Box>
+    <TouchableOpacity activeOpacity={0.8} onPress={() => onPressLocation()}>
       <View style={styles.name}>
         <AppText style={styles.name}>{`#${rank} ${name}`}</AppText>
       </View>
-      <View style={styles.meta}>
-        {typeof totalDevelopers !== 'undefined' && (
-          <AppText className={styles.metaItem}>{`${totalDevelopers} Geliştirci`}</AppText>
-        )}
-        <AppText className={styles.metaItem}>{`${totalRepositories} Repo`}</AppText>
-        {language && (
-          <TouchableOpacity activeOpacity={0.8}>
-            <AppText style={[styles.metaItem, styles.language]}>{language}</AppText>
-          </TouchableOpacity>
-        )}
-      </View>
-    </Box>
-  </TouchableOpacity>
+    </TouchableOpacity>
+    <View style={styles.meta}>
+      {typeof totalDevelopers !== 'undefined' && (
+        <AppText className={styles.metaItem}>{`${totalDevelopers} Geliştirci`}</AppText>
+      )}
+      <AppText className={styles.metaItem}>{`${totalRepositories} Repo`}</AppText>
+      {language && (
+        <TouchableOpacity activeOpacity={0.8} onPress={() => onPressLanguage()}>
+          <AppText style={[styles.metaItem, styles.language]}>{language}</AppText>
+        </TouchableOpacity>
+      )}
+    </View>
+  </Box>
 );
 
 const styles = StyleSheet.create({
