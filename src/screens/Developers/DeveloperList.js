@@ -11,13 +11,14 @@ class DeveloperList extends PureComponent {
 
     this.state = {
       loadMoreLoading: false,
+      stopScrollListening: false,
     };
   }
 
   loadMoreContent = (data, error, fetchMore) => {
-    const { loadMoreLoading } = this.state;
+    const { loadMoreLoading, stopScrollListening } = this.state;
 
-    if (loadMoreLoading) {
+    if (loadMoreLoading || stopScrollListening) {
       return;
     }
 
@@ -36,7 +37,7 @@ class DeveloperList extends PureComponent {
           }
 
           if (fetchMoreResult.developers.length === 0) {
-            this.setState({ loadMoreLoading: false }, () => prev);
+            this.setState({ loadMoreLoading: false, stopScrollListening: false }, () => prev);
           }
 
           this.setState({ loadMoreLoading: false });
@@ -119,7 +120,7 @@ class DeveloperList extends PureComponent {
                 />
               )}
               numColumns={1}
-              keyExtractor={(item, index) => `developers-${orderBy.field}-${index}`}
+              keyExtractor={item => `developer-${item.username}`}
               onEndReached={() => {
                 this.loadMoreContent(data, error, fetchMore);
               }}

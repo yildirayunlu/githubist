@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Routes } from '..';
 import { Loading, List, LanguageCard, ErrorState } from '../../components';
 
 class LocationList extends PureComponent {
@@ -11,13 +10,14 @@ class LocationList extends PureComponent {
 
     this.state = {
       loadMoreLoading: false,
+      stopScrollListening: false,
     };
   }
 
   loadMoreContent = (data, error, fetchMore) => {
-    const { loadMoreLoading } = this.state;
+    const { loadMoreLoading, stopScrollListening } = this.state;
 
-    if (loadMoreLoading) {
+    if (loadMoreLoading || stopScrollListening) {
       return;
     }
 
@@ -36,7 +36,7 @@ class LocationList extends PureComponent {
           }
 
           if (fetchMoreResult.languages.length === 0) {
-            this.setState({ loadMoreLoading: false }, () => prev);
+            this.setState({ loadMoreLoading: false, stopScrollListening: false }, () => prev);
           }
 
           this.setState({ loadMoreLoading: false });
@@ -63,7 +63,7 @@ class LocationList extends PureComponent {
       }
     `;
 
-    const { orderBy, navigator, header } = this.props;
+    const { orderBy, header } = this.props;
     const { loadMoreLoading } = this.state;
 
     return (
@@ -92,7 +92,7 @@ class LocationList extends PureComponent {
                 />
               )}
               numColumns={1}
-              keyExtractor={(item, index) => `language-${orderBy.field}-${index}`}
+              keyExtractor={item => `language-${item.slug}`}
               onEndReached={() => {
                 this.loadMoreContent(data, error, fetchMore);
               }}

@@ -17,6 +17,7 @@ import Developer from './Developer';
 import Locations from './Locations';
 import LocationsByTotalDevelopers from './Locations/tabs/ByTotalDevelopers';
 import LocationsByTotalRepositories from './Locations/tabs/ByTotalRepositories';
+import LocationRepositories from './LocationRepositories';
 
 // Languages
 import Languages from './Languages';
@@ -116,6 +117,11 @@ export const Routes = {
     screen: 'app.LocationsByTotalRepositories',
     generator: () => withProvider(LocationsByTotalRepositories),
     title: 'Repo Sayısına Göre',
+  },
+  LocationRepositories: {
+    screen: 'app.LocationRepositories',
+    generator: () => withProvider(LocationRepositories),
+    title: 'Meşhur Repolar',
   },
   Location: {
     screen: 'app.Location',

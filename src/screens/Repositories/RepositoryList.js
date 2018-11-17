@@ -10,13 +10,14 @@ class RepositoryList extends PureComponent {
 
     this.state = {
       loadMoreLoading: false,
+      stopScrollListening: false,
     };
   }
 
   loadMoreContent = (data, error, fetchMore) => {
-    const { loadMoreLoading } = this.state;
+    const { loadMoreLoading, stopScrollListening } = this.state;
 
-    if (loadMoreLoading) {
+    if (loadMoreLoading || stopScrollListening) {
       return;
     }
 
@@ -35,7 +36,7 @@ class RepositoryList extends PureComponent {
           }
 
           if (fetchMoreResult.repositories.length === 0) {
-            this.setState({ loadMoreLoading: false }, () => prev);
+            this.setState({ loadMoreLoading: false, stopScrollListening: false }, () => prev);
           }
 
           this.setState({ loadMoreLoading: false });
@@ -99,7 +100,7 @@ class RepositoryList extends PureComponent {
                 />
               )}
               numColumns={1}
-              keyExtractor={(item, index) => `location-${orderBy.field}-${index}`}
+              keyExtractor={item => `location-${item.slug}`}
               onEndReached={() => {
                 this.loadMoreContent(data, error, fetchMore);
               }}

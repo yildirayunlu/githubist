@@ -34,14 +34,6 @@ const Developer = props => {
         location {
           name
         }
-        languageUsage(limit: 9999, offset: 0) {
-          language {
-            id
-            name
-            slug
-          }
-          repositoriesCount
-        }
         stats {
           rank
           locationRank
@@ -81,7 +73,9 @@ const Developer = props => {
                     navigator.push({
                       ...Routes.DeveloperRepositories,
                       backButtonTitle: '',
-                      passProps: { username: data.developer.username },
+                      passProps: {
+                        username: data.developer.username,
+                      },
                     });
                   }}
                 >
@@ -111,7 +105,6 @@ const Developer = props => {
                 <Highlight subject={data.developer.stats.locationRank} title="Şehir Sıralaması" />
                 <Highlight subject={data.developer.totalStarred} title="Toplam Star'lanma" />
                 <Highlight subject={data.developer.stats.repositoriesCount} title="Repo" />
-                <Highlight subject={data.developer.languageUsage.length} title="Dil Kullanımı" />
                 <Highlight subject={data.developer.followers} title="Takipçi" />
                 <Highlight subject={data.developer.following} title="Takip Edilen" />
                 <Highlight subject={data.developer.location.name} title="Şehir" />

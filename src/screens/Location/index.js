@@ -62,9 +62,9 @@ const Location = props => {
                 <TabBarItem
                   itemPressed={() => {
                     navigator.push({
-                      ...Routes.DeveloperRepositories,
+                      ...Routes.LocationRepositories,
                       backButtonTitle: '',
-                      passProps: { username: data.developer.username },
+                      passProps: { slug: data.location.slug },
                     });
                   }}
                 >

@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Container, List, LanguageCard, Loading, ErrorState } from '../../components';
+import { Loading, Container, List, ErrorState, RepositoryCard } from '../../components';
 
-class DeveloperLanguages extends PureComponent {
+class LocationRepositories extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -21,34 +21,33 @@ class DeveloperLanguages extends PureComponent {
       return;
     }
 
-    if (error || !data || !data.developer || !data.developer.languageUsage) {
-      this.setState({ stopScrollListening: true });
+    if (error || !data || !data.location.repositories) {
       return;
     }
 
     this.setState({ loadMoreLoading: true }, () => {
       fetchMore({
         variables: {
-          offset: data.developer.languageUsage.length,
+          offset: data.location.repositories.length,
         },
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) {
             return prev;
           }
 
-          if (fetchMoreResult.developer.languageUsage.length === 0) {
-            this.setState({ loadMoreLoading: false, stopScrollListening: true }, () => prev);
+          if (fetchMoreResult.location.repositories.length === 0) {
+            this.setState({ loadMoreLoading: false, stopScrollListening: false }, () => prev);
           }
 
           this.setState({ loadMoreLoading: false });
 
           return {
             ...prev,
-            developer: {
-              ...prev.developer,
-              languageUsage: [
-                ...prev.developer.languageUsage,
-                ...fetchMoreResult.developer.languageUsage,
+            location: {
+              ...prev.location,
+              repositories: [
+                ...prev.location.repositories,
+                ...fetchMoreResult.location.repositories,
               ],
             },
           };
@@ -59,27 +58,34 @@ class DeveloperLanguages extends PureComponent {
 
   render() {
     const query = gql`
-      query($username: String!, $limit: Int!, $offset: Int!) {
-        developer(username: $username) {
+      query($slug: String!, $limit: Int!, $offset: Int!, $orderBy: RepositoryOrder!) {
+        location(slug: $slug) {
           id
-          username
-          languageUsage(limit: $limit, offset: $offset) {
+          name
+          slug
+          repositories(limit: $limit, offset: $offset, orderBy: $orderBy) {
+            id
+            slug
+            description
             language {
-              id
               name
               slug
             }
-            repositoriesCount
+            stars
+            forks
           }
         }
       }
     `;
 
-    const { username } = this.props;
+    const { header, slug } = this.props;
     const { loadMoreLoading } = this.state;
 
     return (
-      <Query query={query} variables={{ username, limit: 20, offset: 0 }}>
+      <Query
+        query={query}
+        variables={{ slug, limit: 20, offset: 0, orderBy: { field: 'STARS', direction: 'DESC' } }}
+      >
         {({ loading, error, data, fetchMore }) => {
           if (loading) {
             return <Loading />;
@@ -94,21 +100,26 @@ class DeveloperLanguages extends PureComponent {
               <List
                 style={{ paddingTop: 15 }}
                 showsVerticalScrollIndicator={false}
-                data={data.developer.languageUsage}
+                data={data.location.repositories}
                 renderItem={({ item, index }) => (
-                  <LanguageCard
-                    key={item.language.id}
+                  <RepositoryCard
+                    key={index}
                     rank={index + 1}
-                    name={item.language.name}
-                    totalRepositories={item.repositoriesCount}
+                    slug={item.slug}
+                    description={item.description}
+                    language={item.language}
+                    stars={item.stars}
+                    forks={item.forks}
+                    githubCreatedAt={item.githubCreatedAt}
                   />
                 )}
                 numColumns={1}
-                keyExtractor={item => `location-${item.language.slug}`}
+                keyExtractor={item => `location-${item.slug}`}
                 onEndReached={() => {
                   this.loadMoreContent(data, error, fetchMore);
                 }}
                 ListFooterComponent={loadMoreLoading && <Loading />}
+                ListHeaderComponent={header}
               />
             </Container>
           );
@@ -118,4 +129,4 @@ class DeveloperLanguages extends PureComponent {
   }
 }
 
-export default DeveloperLanguages;
+export default LocationRepositories;

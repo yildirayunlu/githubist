@@ -1,64 +1,127 @@
-import React from 'react';
-import { ScrollView } from 'react-native';
+import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Container, RepositoryCard, Loading, ErrorState } from '../../components';
+import { Container, List, RepositoryCard, Loading, ErrorState } from '../../components';
 
-const DeveloperRepositories = props => {
-  const query = gql`
-    query($username: String!) {
-      developer(username: $username) {
-        id
-        username
-        repositories(limit: 9999, orderBy: { field: STARS, direction: DESC }) {
-          id
-          slug
-          description
-          language {
-            name
-            slug
+class DeveloperRepositories extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loadMoreLoading: false,
+      stopScrollListening: false,
+    };
+  }
+
+  loadMoreContent = (data, error, fetchMore) => {
+    const { loadMoreLoading, stopScrollListening } = this.state;
+
+    if (loadMoreLoading || stopScrollListening) {
+      return;
+    }
+
+    if (error || !data || !data.developer || !data.developer.repositories) {
+      this.setState({ stopScrollListening: true });
+      return;
+    }
+
+    this.setState({ loadMoreLoading: true }, () => {
+      fetchMore({
+        variables: {
+          offset: data.developer.repositories.length,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) {
+            return prev;
           }
-          stars
-          forks
+
+          if (fetchMoreResult.developer.repositories.length === 0) {
+            this.setState({ loadMoreLoading: false, stopScrollListening: true }, () => prev);
+          }
+
+          this.setState({ loadMoreLoading: false });
+
+          return {
+            ...prev,
+            developer: {
+              ...prev.developer,
+              repositories: [
+                ...prev.developer.repositories,
+                ...fetchMoreResult.developer.repositories,
+              ],
+            },
+          };
+        },
+      });
+    });
+  };
+
+  render() {
+    const query = gql`
+      query($username: String!, $limit: Int!, $offset: Int!) {
+        developer(username: $username) {
+          id
+          username
+          repositories(limit: $limit, offset: $offset, orderBy: { field: STARS, direction: DESC }) {
+            id
+            slug
+            description
+            language {
+              name
+              slug
+            }
+            stars
+            forks
+          }
         }
       }
-    }
-  `;
+    `;
 
-  const { username } = props;
+    const { username } = this.props;
+    const { loadMoreLoading } = this.state;
 
-  return (
-    <Query query={query} variables={{ username }}>
-      {({ loading, error, data }) => {
-        if (loading) {
-          return <Loading />;
-        }
+    return (
+      <Query query={query} variables={{ username, limit: 20, offset: 0 }}>
+        {({ loading, error, data, fetchMore }) => {
+          if (loading) {
+            return <Loading />;
+          }
 
-        if (error || !data || !data.developer.repositories) {
-          return <ErrorState />;
-        }
+          if (error || !data) {
+            return <ErrorState />;
+          }
 
-        return (
-          <ScrollView style={{ paddingTop: 15 }}>
+          return (
             <Container>
-              {data.developer.repositories.map((repository, index) => (
-                <RepositoryCard
-                  key={repository.id}
-                  rank={index + 1}
-                  slug={repository.slug}
-                  description={repository.description}
-                  language={repository.language}
-                  stars={repository.stars}
-                  forks={repository.forks}
-                />
-              ))}
+              <List
+                style={{ paddingTop: 15 }}
+                showsVerticalScrollIndicator={false}
+                data={data.developer.repositories}
+                renderItem={({ item, index }) => (
+                  <RepositoryCard
+                    key={item.id}
+                    rank={index + 1}
+                    slug={item.slug}
+                    description={item.description}
+                    language={item.language}
+                    stars={item.stars}
+                    forks={item.forks}
+                  />
+                )}
+                numColumns={1}
+                keyExtractor={item => `repository-${item.id}`}
+                onEndReached={() => {
+                  this.loadMoreContent(data, error, fetchMore);
+                }}
+                ListFooterComponent={loadMoreLoading && <Loading />}
+              />
             </Container>
-          </ScrollView>
-        );
-      }}
-    </Query>
-  );
-};
+          );
+        }}
+      </Query>
+    );
+  }
+}
 
 export default DeveloperRepositories;
