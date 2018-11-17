@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Loading, Container, List, ErrorState, RepositoryCard } from '../../components';
+import { Loading, Container, List, ErrorState, LanguageCard } from '../../components';
 
-class LocationRepositories extends PureComponent {
+class LocationLanguages extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -21,21 +21,22 @@ class LocationRepositories extends PureComponent {
       return;
     }
 
-    if (error || !data || !data.location.repositories) {
+    if (error || !data || !data.location.languageUsage) {
+      this.setState({ stopScrollListening: true });
       return;
     }
 
     this.setState({ loadMoreLoading: true }, () => {
       fetchMore({
         variables: {
-          offset: data.location.repositories.length,
+          offset: data.location.languageUsage.length,
         },
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) {
             return prev;
           }
 
-          if (fetchMoreResult.location.repositories.length === 0) {
+          if (fetchMoreResult.location.languageUsage.length === 0) {
             this.setState({ loadMoreLoading: false, stopScrollListening: true }, () => prev);
           }
 
@@ -45,9 +46,9 @@ class LocationRepositories extends PureComponent {
             ...prev,
             location: {
               ...prev.location,
-              repositories: [
-                ...prev.location.repositories,
-                ...fetchMoreResult.location.repositories,
+              languageUsage: [
+                ...prev.location.languageUsage,
+                ...fetchMoreResult.location.languageUsage,
               ],
             },
           };
@@ -58,21 +59,22 @@ class LocationRepositories extends PureComponent {
 
   render() {
     const query = gql`
-      query($slug: String!, $limit: Int!, $offset: Int!, $orderBy: RepositoryOrder!) {
+      query($slug: String!, $limit: Int!, $offset: Int!) {
         location(slug: $slug) {
           id
           name
           slug
-          repositories(limit: $limit, offset: $offset, orderBy: $orderBy) {
-            id
-            slug
-            description
+          totalDevelopers
+          totalRepositories
+          languageUsage(limit: $limit, offset: $offset) {
             language {
+              id
               name
               slug
+              totalRepositories
+              totalDevelopers
             }
-            stars
-            forks
+            repositoriesCount
           }
         }
       }
@@ -82,10 +84,7 @@ class LocationRepositories extends PureComponent {
     const { loadMoreLoading } = this.state;
 
     return (
-      <Query
-        query={query}
-        variables={{ slug, limit: 20, offset: 0, orderBy: { field: 'STARS', direction: 'DESC' } }}
-      >
+      <Query query={query} variables={{ slug, limit: 20, offset: 0 }}>
         {({ loading, error, data, fetchMore }) => {
           if (loading) {
             return <Loading />;
@@ -100,21 +99,18 @@ class LocationRepositories extends PureComponent {
               <List
                 style={{ paddingTop: 15 }}
                 showsVerticalScrollIndicator={false}
-                data={data.location.repositories}
+                data={data.location.languageUsage}
                 renderItem={({ item, index }) => (
-                  <RepositoryCard
+                  <LanguageCard
                     key={index}
                     rank={index + 1}
-                    slug={item.slug}
-                    description={item.description}
-                    language={item.language}
-                    stars={item.stars}
-                    forks={item.forks}
-                    githubCreatedAt={item.githubCreatedAt}
+                    name={item.language.name}
+                    totalRepositories={item.language.totalRepositories}
+                    totalDevelopers={item.language.totalDevelopers}
                   />
                 )}
                 numColumns={1}
-                keyExtractor={item => `location-${item.slug}`}
+                keyExtractor={item => `language-${item.language.slug}`}
                 onEndReached={() => {
                   this.loadMoreContent(data, error, fetchMore);
                 }}
@@ -129,4 +125,4 @@ class LocationRepositories extends PureComponent {
   }
 }
 
-export default LocationRepositories;
+export default LocationLanguages;

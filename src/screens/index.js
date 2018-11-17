@@ -18,6 +18,8 @@ import Locations from './Locations';
 import LocationsByTotalDevelopers from './Locations/tabs/ByTotalDevelopers';
 import LocationsByTotalRepositories from './Locations/tabs/ByTotalRepositories';
 import LocationRepositories from './LocationRepositories';
+import LocationDevelopers from './LocationDevelopers';
+import LocationLanguages from './LocationLanguages';
 
 // Languages
 import Languages from './Languages';
@@ -128,12 +130,22 @@ export const Routes = {
     generator: () => withProvider(Location),
     title: 'Location',
   },
+  LocationDevelopers: {
+    screen: 'app.LocationDevelopers',
+    generator: () => withProvider(LocationDevelopers),
+    title: 'Meşhur Geliştiriciler',
+  },
+  LocationLanguages: {
+    screen: 'app.LocationLanguages',
+    generator: () => withProvider(LocationLanguages),
+    title: 'Dil Kullanımı',
+  },
 
   Languages: {
     screen: 'app.Languages',
     generator: () => withProvider(Languages),
-    title: 'Languages',
-    label: 'Languages',
+    title: 'Diller',
+    label: 'Diller',
     icon: iconLanguages,
   },
   LanguagesByTotalDevelopers: {
@@ -150,8 +162,8 @@ export const Routes = {
   Repositories: {
     screen: 'app.Repositories',
     generator: () => withProvider(Repositories),
-    title: 'Repositories',
-    label: 'Repositories',
+    title: 'Repolar',
+    label: 'Repolar',
     icon: iconRepositories,
   },
   RepositoriesByForks: {

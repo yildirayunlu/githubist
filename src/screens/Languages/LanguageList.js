@@ -36,7 +36,7 @@ class LocationList extends PureComponent {
           }
 
           if (fetchMoreResult.languages.length === 0) {
-            this.setState({ loadMoreLoading: false, stopScrollListening: false }, () => prev);
+            this.setState({ loadMoreLoading: false, stopScrollListening: true }, () => prev);
           }
 
           this.setState({ loadMoreLoading: false });

@@ -73,9 +73,9 @@ const Location = props => {
                 <TabBarItem
                   itemPressed={() => {
                     navigator.push({
-                      ...Routes.DeveloperLanguages,
+                      ...Routes.LocationDevelopers,
                       backButtonTitle: '',
-                      passProps: { username: data.developer.username },
+                      passProps: { slug: data.location.slug },
                     });
                   }}
                 >
@@ -83,7 +83,11 @@ const Location = props => {
                 </TabBarItem>
                 <TabBarItem
                   itemPressed={() => {
-                    // alert('TODO');
+                    navigator.push({
+                      ...Routes.LocationLanguages,
+                      backButtonTitle: '',
+                      passProps: { slug: data.location.slug },
+                    });
                   }}
                 >
                   Dil Kullanımı
