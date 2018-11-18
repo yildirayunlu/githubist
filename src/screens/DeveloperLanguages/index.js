@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { Routes } from '..';
 import { Container, List, LanguageCard, Loading, ErrorState } from '../../components';
 
 class DeveloperLanguages extends PureComponent {
@@ -75,7 +76,7 @@ class DeveloperLanguages extends PureComponent {
       }
     `;
 
-    const { username } = this.props;
+    const { username, navigator } = this.props;
     const { loadMoreLoading } = this.state;
 
     return (
@@ -101,6 +102,14 @@ class DeveloperLanguages extends PureComponent {
                     rank={index + 1}
                     name={item.language.name}
                     totalRepositories={item.repositoriesCount}
+                    onPressLanguage={() => {
+                      navigator.push({
+                        ...Routes.Language,
+                        title: item.language.name,
+                        backButtonTitle: '',
+                        passProps: { slug: item.language.slug },
+                      });
+                    }}
                   />
                 )}
                 numColumns={1}
