@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { Routes } from '..';
 import { Loading, List, LanguageCard, ErrorState } from '../../components';
 
 class LocationList extends PureComponent {
@@ -63,7 +64,7 @@ class LocationList extends PureComponent {
       }
     `;
 
-    const { orderBy, header } = this.props;
+    const { orderBy, header, navigator } = this.props;
     const { loadMoreLoading } = this.state;
 
     return (
@@ -89,6 +90,14 @@ class LocationList extends PureComponent {
                   name={item.name}
                   totalRepositories={item.totalRepositories}
                   totalDevelopers={item.totalDevelopers}
+                  onPressLanguage={() => {
+                    navigator.push({
+                      ...Routes.Language,
+                      title: item.name,
+                      backButtonTitle: '',
+                      passProps: { slug: item.slug },
+                    });
+                  }}
                 />
               )}
               numColumns={1}

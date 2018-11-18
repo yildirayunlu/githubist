@@ -97,6 +97,7 @@ class DeveloperList extends PureComponent {
                     navigator.push({
                       ...Routes.Developer,
                       title: item.name,
+                      backButtonTitle: '',
                       passProps: { username: item.username },
                     });
                   }}
@@ -104,6 +105,7 @@ class DeveloperList extends PureComponent {
                     navigator.push({
                       ...Routes.Location,
                       title: item.location.name,
+                      backButtonTitle: '',
                       passProps: { slug: item.location.slug },
                     });
                   }}

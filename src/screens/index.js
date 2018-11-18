@@ -20,12 +20,16 @@ import LocationsByTotalRepositories from './Locations/tabs/ByTotalRepositories';
 import LocationRepositories from './LocationRepositories';
 import LocationDevelopers from './LocationDevelopers';
 import LocationLanguages from './LocationLanguages';
+import Location from './Location';
 
 // Languages
 import Languages from './Languages';
 import LanguagesByTotalDevelopers from './Languages/tabs/ByTotalDevelopers';
 import LanguagesByTotalRepositories from './Languages/tabs/ByTotalRepositories';
-import Location from './Location';
+import Language from './Language';
+import LanguageRepositories from './LanguageRepositories';
+import LanguageDevelopers from './LanguageDevelopers';
+import LanguageLocation from './LanguageLocation';
 
 // Respositories
 import Repositories from './Repositories';
@@ -157,6 +161,26 @@ export const Routes = {
     screen: 'app.LanguagesByTotalRepositories',
     generator: () => withProvider(LanguagesByTotalRepositories),
     title: 'Repo Sayısına Göre',
+  },
+  Language: {
+    screen: 'app.Language',
+    generator: () => withProvider(Language),
+    title: 'Language',
+  },
+  LanguageRepositories: {
+    screen: 'app.LanguageRepositories',
+    generator: () => withProvider(LanguageRepositories),
+    title: 'Meşhur Repolar',
+  },
+  LanguageDevelopers: {
+    screen: 'app.LanguageDevelopers',
+    generator: () => withProvider(LanguageDevelopers),
+    title: 'Geliştirici Kullanımı',
+  },
+  LanguageLocation: {
+    screen: 'app.LanguageLocation',
+    generator: () => withProvider(LanguageLocation),
+    title: 'Şehir Dağılımı',
   },
 
   Repositories: {

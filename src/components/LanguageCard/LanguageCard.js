@@ -4,8 +4,13 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Style from '../../styles';
 import { Box, AppText } from '..';
 
-const LanguageCard = ({ rank, name, totalRepositories, totalDevelopers }) => (
-  <TouchableOpacity activeOpacity={0.8}>
+const LanguageCard = ({ rank, name, totalRepositories, totalDevelopers, onPressLanguage }) => (
+  <TouchableOpacity
+    activeOpacity={0.8}
+    onPress={() => {
+      onPressLanguage();
+    }}
+  >
     <Box>
       <View style={styles.name}>
         <AppText style={styles.name}>{`#${rank} ${name}`}</AppText>

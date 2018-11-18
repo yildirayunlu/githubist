@@ -13,7 +13,7 @@ const ScreenHeading = ({ children, ...otherProps }) => (
 const styles = StyleSheet.create({
   screenHeading: {
     fontWeight: '400',
-    marginBottom: Style.variables.spacing.normal,
+    marginVertical: Style.variables.spacing.normal,
     fontSize: Style.variables.fontSizes.normal,
   },
 });

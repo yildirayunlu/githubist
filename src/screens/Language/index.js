@@ -14,22 +14,20 @@ import {
   Highlight,
 } from '../../components';
 
-const Location = props => {
+const Language = props => {
   const query = gql`
     query($slug: String!) {
-      location(slug: $slug) {
+      language(slug: $slug) {
         id
         name
         slug
-        totalDevelopers
         totalRepositories
+        totalDevelopers
+        totalStars
         stats {
           rank
-        }
-        languageUsage(limit: 1) {
-          language {
-            name
-          }
+          developersCountRank
+          repositoriesCountRank
         }
       }
     }
@@ -44,7 +42,7 @@ const Location = props => {
           return <Loading />;
         }
 
-        if (error || !data || !data.location) {
+        if (error || !data || !data.language) {
           return <ErrorState />;
         }
 
@@ -52,8 +50,8 @@ const Location = props => {
           <ScrollView>
             <Container>
               <ScreenHeading>
-                {`Bu şehir için toplam ${data.location.totalDevelopers} geliştrici ve ${
-                  data.location.totalRepositories
+                {`Bu dil için toplam ${data.language.totalDevelopers} geliştrici ve ${
+                  data.language.totalRepositories
                 } repo bulunuyor.`}
               </ScreenHeading>
               <TabBar>
@@ -61,9 +59,9 @@ const Location = props => {
                 <TabBarItem
                   itemPressed={() => {
                     navigator.push({
-                      ...Routes.LocationRepositories,
+                      ...Routes.LanguageRepositories,
                       backButtonTitle: '',
-                      passProps: { slug: data.location.slug },
+                      passProps: { slug: data.language.slug },
                     });
                   }}
                 >
@@ -72,38 +70,39 @@ const Location = props => {
                 <TabBarItem
                   itemPressed={() => {
                     navigator.push({
-                      ...Routes.LocationDevelopers,
+                      ...Routes.LanguageDevelopers,
                       backButtonTitle: '',
-                      passProps: { slug: data.location.slug },
+                      passProps: { slug: data.language.slug },
                     });
                   }}
                 >
-                  Meşhur Geliştiricler
+                  Geliştirici Kullanımı
                 </TabBarItem>
                 <TabBarItem
                   itemPressed={() => {
                     navigator.push({
-                      ...Routes.LocationLanguages,
+                      ...Routes.LanguageLocation,
                       backButtonTitle: '',
-                      passProps: { slug: data.location.slug },
+                      passProps: { slug: data.language.slug },
                     });
                   }}
                 >
-                  Dil Kullanımı
+                  Şehir Dağılımı
                 </TabBarItem>
               </TabBar>
               <View>
-                <Highlight subject={data.location.stats.rank} title="Github.ist Sıralaması" />
-                <Highlight subject={data.location.totalDevelopers} title="Geliştirici" />
-                <Highlight subject={data.location.totalRepositories} title="Repo" />
+                <Highlight subject={data.language.stats.rank} title="Github.ist Sıralaması" />
                 <Highlight
-                  subject={
-                    data.location.languageUsage.length > 0
-                      ? data.location.languageUsage[0].language.name
-                      : 'Yok'
-                  }
-                  title="En Sevilen Dil"
+                  subject={data.language.stats.developersCountRank}
+                  title="Geliştirici Sayısı Sıralaması"
                 />
+                <Highlight
+                  subject={data.language.stats.repositoriesCountRank}
+                  title="Repo Sayısı Sıralaması"
+                />
+                <Highlight subject={data.language.totalDevelopers} title="Geliştirici" />
+                <Highlight subject={data.language.totalRepositories} title="Repo" />
+                <Highlight subject={data.language.totalStars} title="Star" />
               </View>
             </Container>
           </ScrollView>
@@ -113,4 +112,4 @@ const Location = props => {
   );
 };
 
-export default Location;
+export default Language;

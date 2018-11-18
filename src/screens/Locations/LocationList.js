@@ -102,6 +102,7 @@ class LocationList extends PureComponent {
                     navigator.push({
                       ...Routes.Location,
                       title: item.name,
+                      backButtonTitle: '',
                       passProps: { slug: item.slug },
                     });
                   }}

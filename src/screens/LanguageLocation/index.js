@@ -3,9 +3,9 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { Routes } from '..';
-import { Loading, Container, List, ErrorState, DeveloperCard } from '../../components';
+import { Loading, Container, List, ErrorState, LocationCard } from '../../components';
 
-class LocationDevelopers extends PureComponent {
+class LanguageLocation extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -22,21 +22,21 @@ class LocationDevelopers extends PureComponent {
       return;
     }
 
-    if (error || !data || !data.location.developers) {
+    if (error || !data || !data.language.locationUsage) {
       return;
     }
 
     this.setState({ loadMoreLoading: true }, () => {
       fetchMore({
         variables: {
-          offset: data.location.developers.length,
+          offset: data.language.locationUsage.length,
         },
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) {
             return prev;
           }
 
-          if (fetchMoreResult.location.developers.length === 0) {
+          if (fetchMoreResult.language.locationUsage.length === 0) {
             this.setState({ loadMoreLoading: false, stopScrollListening: true }, () => prev);
           }
 
@@ -44,9 +44,12 @@ class LocationDevelopers extends PureComponent {
 
           return {
             ...prev,
-            location: {
-              ...prev.location,
-              developers: [...prev.location.developers, ...fetchMoreResult.location.developers],
+            language: {
+              ...prev.language,
+              locationUsage: [
+                ...prev.language.locationUsage,
+                ...fetchMoreResult.language.locationUsage,
+              ],
             },
           };
         },
@@ -56,28 +59,19 @@ class LocationDevelopers extends PureComponent {
 
   render() {
     const query = gql`
-      query($slug: String!, $limit: Int!, $offset: Int!, $orderBy: DeveloperOrder!) {
-        location(slug: $slug) {
+      query($slug: String!, $limit: Int!, $offset: Int!) {
+        language(slug: $slug) {
           id
           name
           slug
-          totalDevelopers
-          totalRepositories
-          developers(limit: $limit, offset: $offset, orderBy: $orderBy) {
-            id
-            name
-            username
-            avatarUrl
-            totalStarred
-            followers
-            company
+          locationUsage(limit: $limit, offset: $offset) {
             location {
+              id
               name
               slug
             }
-            stats {
-              repositoriesCount
-            }
+
+            repositoriesCount
           }
         }
       }
@@ -87,10 +81,7 @@ class LocationDevelopers extends PureComponent {
     const { loadMoreLoading } = this.state;
 
     return (
-      <Query
-        query={query}
-        variables={{ slug, limit: 20, offset: 0, orderBy: { field: 'SCORE', direction: 'DESC' } }}
-      >
+      <Query query={query} variables={{ slug, limit: 20, offset: 0 }}>
         {({ loading, error, data, fetchMore }) => {
           if (loading) {
             return <Loading />;
@@ -105,17 +96,13 @@ class LocationDevelopers extends PureComponent {
               <List
                 style={{ paddingTop: 15 }}
                 showsVerticalScrollIndicator={false}
-                data={data.location.developers}
+                data={data.language.locationUsage}
                 renderItem={({ item, index }) => (
-                  <DeveloperCard
-                    onPressUser={() => {
-                      navigator.push({
-                        ...Routes.Developer,
-                        title: item.name,
-                        backButtonTitle: '',
-                        passProps: { username: item.username },
-                      });
-                    }}
+                  <LocationCard
+                    key={index}
+                    rank={index + 1}
+                    name={item.location.name}
+                    totalRepositories={item.repositoriesCount}
                     onPressLocation={() => {
                       navigator.push({
                         ...Routes.Location,
@@ -124,20 +111,12 @@ class LocationDevelopers extends PureComponent {
                         passProps: { slug: item.location.slug },
                       });
                     }}
-                    key={item.id}
-                    rank={index + 1}
-                    name={item.name}
-                    username={item.username}
-                    profilePicture={item.avatarUrl}
-                    company={item.company}
-                    totalStarred={item.totalStarred}
-                    followers={item.followers}
-                    location={item.location.name}
-                    repositoriesCount={item.stats.repositoriesCount}
+                    // TODO: push langauge detail screen
+                    onPressLanguage={() => {}}
                   />
                 )}
                 numColumns={1}
-                keyExtractor={item => `developer-${item.username}`}
+                keyExtractor={item => `location-${item.location.slug}`}
                 onEndReached={() => {
                   this.loadMoreContent(data, error, fetchMore);
                 }}
@@ -152,4 +131,4 @@ class LocationDevelopers extends PureComponent {
   }
 }
 
-export default LocationDevelopers;
+export default LanguageLocation;

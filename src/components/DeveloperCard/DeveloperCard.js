@@ -13,6 +13,7 @@ const DeveloperCard = ({
   followers,
   totalStarred,
   repositoriesCount,
+  repoText,
   location,
   onPressUser,
   onPressLocation,
@@ -60,7 +61,7 @@ const DeveloperCard = ({
         <AppText className={styles.metaItem}>{`${followers} Takipçi`}</AppText>
       )}
       {typeof repositoriesCount !== 'undefined' && (
-        <AppText className={styles.metaItem}>{`${repositoriesCount} Repo`}</AppText>
+        <AppText className={styles.metaItem}>{`${repositoriesCount} ${repoText}`}</AppText>
       )}
     </View>
   </Box>
@@ -99,6 +100,7 @@ DeveloperCard.defaultProps = {
   location: undefined,
   company: '',
   repositoriesCount: undefined,
+  repoText: 'Repo',
 };
 
 export default DeveloperCard;
