@@ -5,18 +5,28 @@ import toDateString from '../../utils/toDateString';
 import Style from '../../styles';
 import { Box, AppText } from '..';
 
-const RepositoryCard = ({ rank, slug, description, language, stars, forks, githubCreatedAt }) => (
-  <TouchableOpacity activeOpacity={0.8}>
+const RepositoryCard = ({
+  rank,
+  slug,
+  description,
+  language,
+  stars,
+  forks,
+  githubCreatedAt,
+  onPressRepository,
+  onPressLangauge,
+}) => (
+  <View>
     <Box>
-      <View>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => onPressRepository()}>
         <AppText style={styles.name}>{`#${rank} ${slug}`}</AppText>
-      </View>
+      </TouchableOpacity>
       <View>
         <AppText style={styles.description}>{description}</AppText>
       </View>
       <View style={styles.meta}>
         <View style={styles.metaItem}>
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => onPressLangauge()}>
             <AppText style={[styles.metaItem, styles.language]}>{language.name}</AppText>
           </TouchableOpacity>
         </View>
@@ -33,7 +43,7 @@ const RepositoryCard = ({ rank, slug, description, language, stars, forks, githu
         )}
       </View>
     </Box>
-  </TouchableOpacity>
+  </View>
 );
 
 const styles = StyleSheet.create({

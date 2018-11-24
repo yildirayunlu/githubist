@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { Routes } from '..';
 import { Loading, Container, List, ErrorState, RepositoryCard } from '../../components';
 
 class LocationRepositories extends PureComponent {
@@ -78,7 +79,7 @@ class LocationRepositories extends PureComponent {
       }
     `;
 
-    const { header, slug } = this.props;
+    const { header, slug, navigator } = this.props;
     const { loadMoreLoading } = this.state;
 
     return (
@@ -111,6 +112,22 @@ class LocationRepositories extends PureComponent {
                     stars={item.stars}
                     forks={item.forks}
                     githubCreatedAt={item.githubCreatedAt}
+                    onPressRepository={() => {
+                      navigator.push({
+                        ...Routes.Repository,
+                        title: item.slug,
+                        backButtonTitle: '',
+                        passProps: { slug: item.slug },
+                      });
+                    }}
+                    onPressLangauge={() => {
+                      navigator.push({
+                        ...Routes.Language,
+                        title: item.language.name,
+                        backButtonTitle: '',
+                        passProps: { slug: item.language.slug },
+                      });
+                    }}
                   />
                 )}
                 numColumns={1}

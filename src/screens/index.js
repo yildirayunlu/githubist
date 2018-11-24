@@ -35,6 +35,7 @@ import LanguageLocation from './LanguageLocation';
 import Repositories from './Repositories';
 import RepositoriesByForks from './Repositories/tabs/ByForks';
 import RepositoriesByDate from './Repositories/tabs/ByDate';
+import Repository from './Repository';
 
 import iconDevelopers from '../../assets/images/icons/developers.png';
 import iconLocations from '../../assets/images/icons/locations.png';
@@ -199,6 +200,11 @@ export const Routes = {
     screen: 'app.RepositoriesByDate',
     generator: () => withProvider(RepositoriesByDate),
     title: 'İlk Repolar',
+  },
+  Repository: {
+    screen: 'app.Repository',
+    generator: () => withProvider(Repository),
+    title: 'Repository',
   },
 };
 

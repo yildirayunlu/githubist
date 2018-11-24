@@ -111,8 +111,6 @@ class LanguageLocation extends PureComponent {
                         passProps: { slug: item.location.slug },
                       });
                     }}
-                    // TODO: push langauge detail screen
-                    onPressLanguage={() => {}}
                   />
                 )}
                 numColumns={1}
