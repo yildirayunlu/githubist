@@ -106,8 +106,14 @@ class LocationList extends PureComponent {
                       passProps: { slug: item.slug },
                     });
                   }}
-                  // TODO: push langauge detail screen
-                  onPressLanguage={() => {}}
+                  onPressLanguage={() => {
+                    navigator.push({
+                      ...Routes.Language,
+                      title: item.name,
+                      backButtonTitle: '',
+                      passProps: { slug: item.slug },
+                    });
+                  }}
                 />
               )}
               numColumns={1}

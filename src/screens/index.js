@@ -4,6 +4,8 @@ import { ApolloClient, InMemoryCache } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { createHttpLink } from 'apollo-link-http';
 
+import Config from '../../config';
+
 // Developers
 import Developers from './Developers';
 import DevelopersByTotalStarred from './Developers/tabs/ByTotalStarred';
@@ -51,7 +53,7 @@ const cache = new InMemoryCache();
 
 const localClient = new ApolloClient({
   link: createHttpLink({
-    uri: 'https://data.github.ist/graphql',
+    uri: Config.API_URL,
   }),
   cache,
 });
