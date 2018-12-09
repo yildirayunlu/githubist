@@ -18,53 +18,48 @@ const DeveloperCard = ({
   onPressUser,
   onPressLocation,
 }) => (
-  <Box>
-    <View style={styles.profile}>
-      <TouchableOpacity
-        onPress={() => {
-          onPressUser();
-        }}
-        activeOpacity={0.8}
-        style={styles.avatar}
-      >
-        <Avatar small source={{ uri: profilePicture }} />
-      </TouchableOpacity>
+  <TouchableOpacity
+    onPress={() => {
+      onPressUser();
+    }}
+    activeOpacity={0.8}
+  >
+    <Box>
+      <View style={styles.profile}>
+        <View style={styles.avatar}>
+          <Avatar small source={{ uri: profilePicture }} />
+        </View>
 
-      <TouchableOpacity
-        onPress={() => {
-          onPressUser();
-        }}
-        activeOpacity={0.8}
-        style={styles.info}
-      >
-        <AppText style={styles.name}>{`#${rank} ${name}`}</AppText>
-        <AppText style={styles.username}>{username}</AppText>
-        {company && <AppText style={styles.company}>{company}</AppText>}
-      </TouchableOpacity>
-    </View>
-    <View style={styles.meta}>
-      {location && (
-        <TouchableOpacity
-          onPress={() => {
-            onPressLocation();
-          }}
-          activeOpacity={0.8}
-        >
-          <AppText style={[styles.metaItem, styles.location]}>{location}</AppText>
-        </TouchableOpacity>
-      )}
+        <View style={styles.info}>
+          <AppText style={styles.name}>{`#${rank} ${name}`}</AppText>
+          <AppText style={styles.username}>{username}</AppText>
+          {company && <AppText style={styles.company}>{company}</AppText>}
+        </View>
+      </View>
+      <View style={styles.meta}>
+        {location && (
+          <TouchableOpacity
+            onPress={() => {
+              onPressLocation();
+            }}
+            activeOpacity={0.8}
+          >
+            <AppText style={[styles.metaItem, styles.location]}>{location}</AppText>
+          </TouchableOpacity>
+        )}
 
-      {typeof totalStarred !== 'undefined' && (
-        <AppText className={styles.metaItem}>{`${totalStarred} Star'lanma`}</AppText>
-      )}
-      {typeof followers !== 'undefined' && (
-        <AppText className={styles.metaItem}>{`${followers} Takipçi`}</AppText>
-      )}
-      {typeof repositoriesCount !== 'undefined' && (
-        <AppText className={styles.metaItem}>{`${repositoriesCount} ${repoText}`}</AppText>
-      )}
-    </View>
-  </Box>
+        {typeof totalStarred !== 'undefined' && (
+          <AppText className={styles.metaItem}>{`${totalStarred} Star'lanma`}</AppText>
+        )}
+        {typeof followers !== 'undefined' && (
+          <AppText className={styles.metaItem}>{`${followers} Takipçi`}</AppText>
+        )}
+        {typeof repositoriesCount !== 'undefined' && (
+          <AppText className={styles.metaItem}>{`${repositoriesCount} ${repoText}`}</AppText>
+        )}
+      </View>
+    </Box>
+  </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({

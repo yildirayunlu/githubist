@@ -16,11 +16,11 @@ const RepositoryCard = ({
   onPressRepository,
   onPressLangauge,
 }) => (
-  <View>
+  <TouchableOpacity activeOpacity={0.8} onPress={() => onPressRepository()}>
     <Box>
-      <TouchableOpacity activeOpacity={0.8} onPress={() => onPressRepository()}>
+      <View>
         <AppText style={styles.name}>{`#${rank} ${slug}`}</AppText>
-      </TouchableOpacity>
+      </View>
       <View>
         <AppText style={styles.description}>{description}</AppText>
       </View>
@@ -43,7 +43,7 @@ const RepositoryCard = ({
         )}
       </View>
     </Box>
-  </View>
+  </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({

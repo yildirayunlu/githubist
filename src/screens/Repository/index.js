@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Linking } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -93,6 +93,9 @@ const Repository = props => {
                   }}
                 >
                   Dili Görüntüle
+                </TabBarItem>
+                <TabBarItem itemPressed={() => Linking.openURL(`https://github.com/${slug}`)}>
+                  Github&apos;da Görüntüle
                 </TabBarItem>
               </TabBar>
               <View>

@@ -109,9 +109,9 @@ class LocationList extends PureComponent {
                   onPressLanguage={() => {
                     navigator.push({
                       ...Routes.Language,
-                      title: item.name,
+                      title: item.languageUsage[0].language.name,
                       backButtonTitle: '',
-                      passProps: { slug: item.slug },
+                      passProps: { slug: item.languageUsage[0].language.slug },
                     });
                   }}
                 />

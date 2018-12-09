@@ -13,24 +13,25 @@ const LocationCard = ({
   onPressLocation,
   onPressLanguage,
 }) => (
-  <Box>
-    <TouchableOpacity activeOpacity={0.8} onPress={() => onPressLocation()}>
+  <TouchableOpacity activeOpacity={0.8} onPress={() => onPressLocation()}>
+    <Box>
       <View style={styles.name}>
         <AppText style={styles.name}>{`#${rank} ${name}`}</AppText>
       </View>
-    </TouchableOpacity>
-    <View style={styles.meta}>
-      {typeof totalDevelopers !== 'undefined' && (
-        <AppText className={styles.metaItem}>{`${totalDevelopers} Geliştirci`}</AppText>
-      )}
-      <AppText className={styles.metaItem}>{`${totalRepositories} Repo`}</AppText>
-      {language && (
-        <TouchableOpacity activeOpacity={0.8} onPress={() => onPressLanguage()}>
-          <AppText style={[styles.metaItem, styles.language]}>{language}</AppText>
-        </TouchableOpacity>
-      )}
-    </View>
-  </Box>
+
+      <View style={styles.meta}>
+        {typeof totalDevelopers !== 'undefined' && (
+          <AppText className={styles.metaItem}>{`${totalDevelopers} Geliştirci`}</AppText>
+        )}
+        <AppText className={styles.metaItem}>{`${totalRepositories} Repo`}</AppText>
+        {language && (
+          <TouchableOpacity activeOpacity={0.8} onPress={() => onPressLanguage()}>
+            <AppText style={[styles.metaItem, styles.language]}>{language}</AppText>
+          </TouchableOpacity>
+        )}
+      </View>
+    </Box>
+  </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
