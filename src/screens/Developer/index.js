@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Linking } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -93,9 +93,9 @@ const Developer = props => {
                   Dil Kullanımı
                 </TabBarItem>
                 <TabBarItem
-                  itemPressed={() => {
-                    // alert('TODO');
-                  }}
+                  itemPressed={() =>
+                    Linking.openURL(`https://github.com/${data.developer.username}`)
+                  }
                 >
                   Github&apos;da Görüntüle
                 </TabBarItem>
