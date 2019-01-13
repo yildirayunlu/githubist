@@ -39,10 +39,14 @@ import RepositoriesByForks from './Repositories/tabs/ByForks';
 import RepositoriesByDate from './Repositories/tabs/ByDate';
 import Repository from './Repository';
 
+// Search
+import Search from './Search';
+
 import iconDevelopers from '../../assets/images/icons/developers.png';
 import iconLocations from '../../assets/images/icons/locations.png';
 import iconLanguages from '../../assets/images/icons/languages.png';
 import iconRepositories from '../../assets/images/icons/repositories.png';
+import iconSearch from '../../assets/images/icons/search.png';
 
 // const navigatorStyle = {};
 const tabsStyle = {
@@ -208,6 +212,14 @@ export const Routes = {
     generator: () => withProvider(Repository),
     title: 'Repository',
   },
+
+  Search: {
+    screen: 'app.Search',
+    generator: () => withProvider(Search),
+    title: 'Arama',
+    label: 'Arama',
+    icon: iconSearch,
+  },
 };
 
 export function registerScreens() {
@@ -218,7 +230,13 @@ export function registerScreens() {
 
 export function openHomeScreen() {
   Navigation.startTabBasedApp({
-    tabs: [Routes.Developers, Routes.Locations, Routes.Languages, Routes.Repositories],
+    tabs: [
+      Routes.Developers,
+      Routes.Locations,
+      Routes.Search,
+      Routes.Languages,
+      Routes.Repositories,
+    ],
     tabsStyle: { ...tabsStyle },
   });
 }
