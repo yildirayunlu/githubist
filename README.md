@@ -6,3 +6,7 @@ This repository is the react-native application of [github.ist](https://github.c
 
 `yarn install`
 `react native run-ios` or `react native run-android`
+
+# Screen Shot
+
+![githubist](/screenshot.gif)
